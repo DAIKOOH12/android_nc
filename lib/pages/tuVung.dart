@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class tuVung extends StatefulWidget {
@@ -8,6 +9,25 @@ class tuVung extends StatefulWidget {
 }
 
 class _tuVungState extends State<tuVung> {
+
+  List<String> _listMaChuDe = [], _listTenChuDe = [];
+
+
+  Future getChuDe() async {
+    final snapShot = await FirebaseFirestore.instance.collection('tuVung').get();
+    if(snapShot.docs.length > 0) {
+      snapShot.docs.forEach((element) {
+        _listMaChuDe.add(element['sMaChuDe']);
+        _listTenChuDe.add(element['sTenChuDe']);
+      });
+    }
+  }
+
+
+  @override
+  void initState() {
+    getChuDe();
+  }
 
 
   @override
@@ -115,7 +135,7 @@ class _tuVungState extends State<tuVung> {
 
             ListView.builder(
               shrinkWrap: true,
-              itemCount: 20,
+              itemCount: _listMaChuDe.length,
               physics: NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) {
                 return Center(
@@ -141,7 +161,7 @@ class _tuVungState extends State<tuVung> {
                                 ),
                               ),
                               SizedBox(width: 20,),
-                              Text('Bảng chữ cái'),
+                              Text(_listTenChuDe[index]),
                             ],
                           ),
                         ),

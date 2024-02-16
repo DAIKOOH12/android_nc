@@ -61,9 +61,10 @@ class _taiKhoanState extends State<taiKhoan> {
                   onPressed: () async {
                     await FirebaseAuth.instance.signOut();
                     await GoogleSignIn().signOut();
-                    Navigator.pushReplacement(
+                    Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(builder: (context) => MainPage()),
+                        (Route<dynamic> route) => false,
                     );
                     // MainPage();
                     // dispose();

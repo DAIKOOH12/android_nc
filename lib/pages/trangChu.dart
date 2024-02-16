@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:german_for_u/pages/lu%E1%BB%B5enThi.dart';
@@ -11,26 +12,56 @@ class trangChu extends StatefulWidget {
 
   @override
   State<trangChu> createState() => _trangChuState();
+
+
 }
 
 class _trangChuState extends State<trangChu> {
+
+  String name = "default";
+
+
   List<String> items = ["Từ vựng","Ngữ pháp","Luyện thi"];
   int current = 0;
 
+  Future<String> getName() async {
+    final user = await FirebaseAuth.instance.currentUser!;
+    // print("'" + user.email.toString() + "'");
+
+    final userSnapshot = await FirebaseFirestore.instance
+        .collection("user")
+        .doc(user.email.toString())
+        .get();
+
+    if(userSnapshot.exists){
+      print(userSnapshot.get('hoTen'));
+      return userSnapshot.get('hoTen').toString();
+    }
+    else
+      return "lỗi";
+    
+
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getName().then((value) => setState((){
+      name = value;
+    }));
+  }
+
   @override
   Widget build(BuildContext context) {
+
     var size = MediaQuery.of(context).size;
 
-    late TabController tabController;
-    final user = FirebaseAuth.instance.currentUser!;
-    final hehh = user.uid;
-    // print(hehh);
 
     return SafeArea(
         child: Scaffold(
             appBar: AppBar(
 
-              title: Text('Hallo ' + user.displayName.toString(), style: TextStyle(color: Color(0xFF038400)),),
+              title: Text('Hallo ' + name, style: TextStyle(color: Color(0xFF038400)),),
               actions: <Widget>[
                 Padding(
                   padding: const EdgeInsets.all(10.0),
@@ -148,6 +179,8 @@ class _trangChuState extends State<trangChu> {
         )
     );
   }
+
+
 }
 
 // body: Center(
