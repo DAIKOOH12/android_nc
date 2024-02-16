@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:german_for_u/pages/CT_TuVung.dart';
 
 class tuVung extends StatefulWidget {
   const tuVung({super.key});
@@ -138,41 +139,48 @@ class _tuVungState extends State<tuVung> {
               itemCount: _listMaChuDe.length,
               physics: NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) {
-                return Center(
-                  child: Container(
-                    margin: EdgeInsets.only(bottom: 25),
-                    padding: EdgeInsets.only(left: 20),
-                    width: size.width* 0.85,
-                    height: size.height * 0.1,
-                    decoration: BoxDecoration(
-                        color: Color(0xFFD9D9D9).withOpacity(0.31),
-                        borderRadius: BorderRadius.circular(18)
-                    ),
-                    child: Stack(
-                      children: [
-                        Center(
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Container(
-                                child: ImageIcon(
-                                  AssetImage('images/education.png'),
-                                  size: 60,
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context){
+                      return CT_TuVung(maChuDe: _listMaChuDe[index], tenChuDe: _listTenChuDe[index],);
+                    }));
+                  },
+                  child: Center(
+                    child: Container(
+                      margin: EdgeInsets.only(bottom: 25),
+                      padding: EdgeInsets.only(left: 20),
+                      width: size.width* 0.85,
+                      height: size.height * 0.1,
+                      decoration: BoxDecoration(
+                          color: Color(0xFFD9D9D9).withOpacity(0.31),
+                          borderRadius: BorderRadius.circular(18)
+                      ),
+                      child: Stack(
+                        children: [
+                          Center(
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                  child: ImageIcon(
+                                    AssetImage('images/education.png'),
+                                    size: 60,
+                                  ),
                                 ),
-                              ),
-                              SizedBox(width: 20,),
-                              Text(_listTenChuDe[index]),
-                            ],
+                                SizedBox(width: 20,),
+                                Text(_listTenChuDe[index]),
+                              ],
+                            ),
                           ),
-                        ),
 
-                        Positioned(
-                          top: 0,
-                          right: 10,
-                          bottom: 0,
-                          child: Icon(Icons.check_circle, color: Colors.green[400], size: 35,),
-                        )
-                      ],
+                          Positioned(
+                            top: 0,
+                            right: 10,
+                            bottom: 0,
+                            child: Icon(Icons.check_circle, color: Colors.green[400], size: 35,),
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 );
