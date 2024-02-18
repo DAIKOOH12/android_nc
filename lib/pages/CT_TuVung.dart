@@ -1,11 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+import 'package:german_for_u/obj/DT_tuVung.dart';
 
 
 class CT_TuVung extends StatefulWidget {
   final String maChuDe;
   final String tenChuDe;
+
+
 
   const CT_TuVung({Key? key, required this.maChuDe, required this.tenChuDe})
       : super(key: key);
@@ -16,6 +19,9 @@ class CT_TuVung extends StatefulWidget {
 
 class _CT_TuVungState extends State<CT_TuVung> {
   List<String> _listTuVung = [];
+  List<String> _listNghia = [];
+  List<DT_tuVung> lst = [];
+
   FlutterTts flutterTts = FlutterTts();
 
   @override
@@ -31,13 +37,26 @@ class _CT_TuVungState extends State<CT_TuVung> {
         .where('sMaChuDe', isEqualTo: widget.maChuDe.toString())
         .get();
 
+
+
+
     if (snapShot.docs.isNotEmpty) {
       snapShot.docs.forEach((value) {
+
         _listTuVung.add(value['sTu']);
+        if(value.data().containsKey('sNghia')) {
+          _listNghia.add(value['sNghia']);
+          lst.add(DT_tuVung(value['sTu'], value['sNghia'], widget.maChuDe.toString(), widget.tenChuDe.toString()));
+        }
+        else
+          {
+            lst.add(DT_tuVung(value['sTu'], "", widget.maChuDe.toString(), widget.tenChuDe.toString()));
+          }
+
       });
     }
     setState(() {
-      _listTuVung.sort();
+      lst.sort((a ,b ) => a.tu.compareTo(b.tu));
     });
   }
 
@@ -47,6 +66,16 @@ class _CT_TuVungState extends State<CT_TuVung> {
     await flutterTts.setPitch(0.8);
     await flutterTts.speak(text);
   }
+
+  // Future layNghia() async {
+  //   final result = await FirebaseFirestore.instance.collection('tuVungTheoChuDe')
+  //       .where('sMaChuDe', isEqualTo: widget.maChuDe)
+  //       .get();
+  //
+  //   if(result.docs.isNotEmpty) {
+  //
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -67,32 +96,52 @@ class _CT_TuVungState extends State<CT_TuVung> {
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
-                    return Center(
-                      child: Container(
-                        margin: EdgeInsets.only(bottom: 20),
-                        width: size.width * 0.85,
-                        height: 100,
-                        padding: EdgeInsets.all(18),
-                        decoration: BoxDecoration(
-                            color: Colors.grey[200],
-                            borderRadius: BorderRadius.circular(18)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              _listTuVung[index],
-                              style: TextStyle(
-                                  fontSize: 23, fontWeight: FontWeight.w700),
-                            ),
-                            IconButton(
-                              onPressed: () {
-                                speak(_listTuVung[index].toString());
-                              },
-                              icon: Icon(Icons.speaker),
-                            )
-                          ],
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(bottom: 20),
+                          width: size.width * 0.75,
+                          height: 100,
+                          padding: EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                              color: Colors.grey[200],
+                              borderRadius: BorderRadius.circular(18)),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            // crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text(
+                                lst[index].tu,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 23, fontWeight: FontWeight.w700),
+                              ),
+
+                              // SizedBox(height: 20,),
+
+                              if(lst[index].nghia.isNotEmpty)
+                              Text(
+                                lst[index].nghia,
+                                textAlign: TextAlign.center,
+                              )
+
+                            ],
+                          ),
                         ),
-                      ),
+
+                        SizedBox(width: 10,),
+
+                        GestureDetector(
+                          onTap: (){
+                            speak(lst[index].tu.toString());
+                          },
+                          child: ImageIcon(
+                              AssetImage('images/speaker.png')
+                          ),
+                        )
+
+                      ],
                     );
                   },
                 )

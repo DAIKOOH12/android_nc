@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:german_for_u/obj/DT_tuVung.dart';
 import 'package:german_for_u/pages/CT_TuVung.dart';
 
 class tuVung extends StatefulWidget {
@@ -16,17 +17,26 @@ class _tuVungState extends State<tuVung> {
 
   Future getChuDe() async {
     final snapShot = await FirebaseFirestore.instance.collection('tuVung').get();
+    List<String> lmcd = [], ltcd = [], lt = [], ln = [];
     if(snapShot.docs.length > 0) {
       snapShot.docs.forEach((element) {
-        _listMaChuDe.add(element['sMaChuDe']);
-        _listTenChuDe.add(element['sTenChuDe']);
+        lmcd.add(element['sMaChuDe']);
+        ltcd.add(element['sTenChuDe']);
+        // lt.add(element['sTu']);
+        // ln.add(element['sNghia']);
       });
     }
+    setState(() {
+      _listMaChuDe.addAll(lmcd);
+      _listTenChuDe.addAll(ltcd);
+      // _li
+    });
   }
 
 
   @override
   void initState() {
+    super.initState();
     getChuDe();
   }
 
@@ -143,6 +153,8 @@ class _tuVungState extends State<tuVung> {
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context){
                       return CT_TuVung(maChuDe: _listMaChuDe[index], tenChuDe: _listTenChuDe[index],);
+                      // DT_tuVung tv = DT_tuVung(_tu, _nghia)
+                      // return CT_TuVung(DTTV: ,);
                     }));
                   },
                   child: Center(

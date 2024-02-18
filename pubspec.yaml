@@ -81,6 +81,7 @@ flutter:
      - images/education.png
      - images/headphone.png
      - images/reading.png
+     - images/speaker.png
      - .env
   #   - images/a_dot_ham.jpeg
 
