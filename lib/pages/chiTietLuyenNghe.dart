@@ -19,28 +19,39 @@ class _chiTietLuyenNgheState extends State<chiTietLuyenNghe> {
   double sliderMax = 0;
 
 
+
+
   @override
   void initState() {
     super.initState();
     audioPlayer.onPlayerStateChanged.listen((state) {
-      setState(() {
-        isPlaying = state == PlayerState.playing;
-      });
+      if(mounted) {
+        setState(() {
+          isPlaying = state == PlayerState.playing;
+        });
+      }
+
     });
 
     audioPlayer.onDurationChanged.listen((newDuration) {
-      setState(() {
-        duration = newDuration;
-        print("đây này" + duration.toString());
-        sliderMax  = newDuration.inSeconds.toDouble();
-      });
+      if (mounted) {
+        setState(() {
+          duration = newDuration;
+          print("đây này" + duration.toString());
+          sliderMax  = newDuration.inSeconds.toDouble();
+        });
+      }
+
     });
 
     audioPlayer.onPositionChanged.listen((newPosition) {
-      setState(() {
-        position=newPosition;
+      if (mounted) {
+        setState(() {
+          position=newPosition;
 
-      });
+        });
+      }
+
     });
 
     setAudio();
@@ -48,7 +59,7 @@ class _chiTietLuyenNgheState extends State<chiTietLuyenNghe> {
 
   Future setAudio() async {
     audioPlayer.setReleaseMode(ReleaseMode.loop);
-    String url = 'https://www.kozco.com/tech/WAV-MP3.wav';
+    String url = 'https://firebasestorage.googleapis.com/v0/b/german-for-u.appspot.com/o/so_dem2.mp3?alt=media&token=6b563c5c-cf70-44ec-86de-f00c9b5da559';
     audioPlayer.setSourceUrl(url);
     await audioPlayer.pause();
   }
@@ -115,7 +126,7 @@ class _chiTietLuyenNgheState extends State<chiTietLuyenNghe> {
                               if(isPlaying) {
                                 await audioPlayer.pause();
                               } else {
-                                String url = 'https://www.kozco.com/tech/WAV-MP3.wav';
+                                String url = 'https://firebasestorage.googleapis.com/v0/b/german-for-u.appspot.com/o/so_dem2.mp3?alt=media&token=6b563c5c-cf70-44ec-86de-f00c9b5da559';
                                 // Source source = Source.fromString(url);
                                 // await audioPlayer.setSourceUrl(url);
                                 await audioPlayer.play(UrlSource(url));
