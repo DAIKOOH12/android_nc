@@ -1,10 +1,14 @@
 import 'dart:ffi';
 
 import 'package:audioplayers/audioplayers.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:german_for_u/obj/obj_DapAnLN.dart';
+import 'package:german_for_u/obj/obj_LuyenNghe.dart';
 
 class chiTietLuyenNghe extends StatefulWidget {
-  const chiTietLuyenNghe({super.key});
+  final String maBT;
+  const chiTietLuyenNghe({super.key, required this.maBT});
 
   @override
   State<chiTietLuyenNghe> createState() => _chiTietLuyenNgheState();
@@ -12,62 +16,195 @@ class chiTietLuyenNghe extends StatefulWidget {
 
 class _chiTietLuyenNgheState extends State<chiTietLuyenNghe> {
 
-  final audioPlayer = AudioPlayer();
-  bool isPlaying = false;
-  Duration duration = Duration.zero;
-  Duration position = Duration.zero;
+  // final audioPlayer = AudioPlayer();
+  // bool isPlaying = false;
+  // Duration duration = Duration.zero;
+  // Duration position = Duration.zero;
+
+  List<Duration> durations = [];
+  List<Duration> positions = [];
+  List<bool> isPlayingList = [];
+  List<AudioPlayer> audioPlayers = [];
+
+  List<String> lstDapAn = [];
+
+
   double sliderMax = 0;
 
+  List<obj_luyenNghe> listBTL = [];
 
+
+  String question = "";
+  String title = "";
+  String slink = "";
+
+  Future getBaiTapLuyen() async {
+    print(widget.maBT);
+    final CTBTL = await FirebaseFirestore.instance.collection('CT_baiTapLuyen')
+        .where('sMaBTL', isEqualTo: widget.maBT)
+        .get();
+
+    if(CTBTL.docs.isNotEmpty) {
+
+      for(var element in CTBTL.docs) {
+
+        if(!element.data().containsKey('B')){
+          continue;
+        }
+
+        if(!element.data().containsKey('D') && element.data().containsKey('C')){
+          listBTL.add(new obj_luyenNghe(element.id, element['sMaBTL'], element['sLink'], element['sDeBai'], element['sTitle'],
+              element['A'], element['B'], element['C'], ""));
+        }
+        else if(!element.data().containsKey('C')){
+          listBTL.add(new obj_luyenNghe(element.id, element['sMaBTL'], element['sLink'], element['sDeBai'], element['sTitle'],
+              element['A'], element['B'], "", ""));
+        }
+        else if(element.data().containsKey('D')){
+          listBTL.add(new obj_luyenNghe(element.id, element['sMaBTL'], element['sLink'], element['sDeBai'], element['sTitle'],
+              element['A'], element['B'], element['C'], element['D']));
+
+        }
+      }
+      // CTBTL.docs.forEach((element) {
+      //
+      //     // question = element['sDeBai'];
+      //     // title = element["sTitle"];
+      //     // slink = element["sLink"];
+      //   if(!element.data().containsKey('D') && element.data().containsKey('C')){
+      //     listBTL.add(new obj_luyenNghe(element.id, element['sMaBTL'], element['sLink'], element['sDeBai'], element['sTitle'],
+      //         element['A'], element['B'], element['C'], ""));
+      //   }
+      //   else if(!element.data().containsKey('C')){
+      //     listBTL.add(new obj_luyenNghe(element.id, element['sMaBTL'], element['sLink'], element['sDeBai'], element['sTitle'],
+      //         element['A'], element['B'], "", ""));
+      //   }
+      //   else if(element.data().containsKey('D')){
+      //     listBTL.add(new obj_luyenNghe(element.id, element['sMaBTL'], element['sLink'], element['sDeBai'], element['sTitle'],
+      //         element['A'], element['B'], element['C'], element['D']));
+      //
+      //   }
+      //
+      // });
+    }
+
+
+
+
+    final CTBTN = await FirebaseFirestore.instance.collection('CT_BaiTapNghe')
+        .where('sMaCTBTL', isEqualTo: CTBTL.docs[1].id)
+        .get();
+
+
+    listBTL.sort((a,b) => a.tieuDe.compareTo(b.tieuDe));
+    if(mounted) setState(() {
+      lstDapAn = List.generate(listBTL.length, (index) => "");
+      isPlayingList = List.generate(listBTL.length, (index) => false);
+      audioPlayers = List.generate(listBTL.length, (index) => AudioPlayer());
+      durations = List.generate(listBTL.length, (index) => Duration.zero);
+      positions = List.generate(listBTL.length, (index) => Duration.zero);
+    });
+
+
+    for (int i = 0; i < audioPlayers.length; i++) {
+      audioPlayers[i].onPlayerStateChanged.listen((state) {
+        if(mounted) {
+          setState(() {
+            isPlayingList[i] = state == PlayerState.playing;
+          });
+        }
+      });
+
+      audioPlayers[i].onDurationChanged.listen((newDuration) {
+        if (mounted) {
+          setState(() {
+            durations[i] = newDuration;
+          });
+        }
+      });
+
+      audioPlayers[i].onPositionChanged.listen((newPosition) {
+        if (mounted) {
+          setState(() {
+            positions[i] = newPosition;
+            sliderMax=newPosition.inSeconds.toDouble();
+          });
+        }
+      });
+    }
+
+    // getDapAn(index)
+
+  }
 
 
   @override
   void initState() {
+
+
     super.initState();
-    audioPlayer.onPlayerStateChanged.listen((state) {
-      if(mounted) {
-        setState(() {
-          isPlaying = state == PlayerState.playing;
-        });
-      }
+    getBaiTapLuyen();
 
-    });
 
-    audioPlayer.onDurationChanged.listen((newDuration) {
-      if (mounted) {
-        setState(() {
-          duration = newDuration;
-          print("đây này" + duration.toString());
-          sliderMax  = newDuration.inSeconds.toDouble();
-        });
-      }
 
-    });
 
-    audioPlayer.onPositionChanged.listen((newPosition) {
-      if (mounted) {
-        setState(() {
-          position=newPosition;
+    // setIsPlayingList();
 
-        });
-      }
 
-    });
 
-    setAudio();
+    // audioPlayer.onPlayerStateChanged.listen((state) {
+    //   if(mounted) {
+    //     setState(() {
+    //       // isPlaying = state == PlayerState.playing;
+    //       isPlayingList = List.generate(listBTL.length, (index) => state == PlayerState.playing);
+    //     });
+    //
+    //   }
+    //
+    // });
+    //
+    // audioPlayer.onDurationChanged.listen((newDuration) {
+    //   if (mounted) {
+    //     setState(() {
+    //       duration = newDuration;
+    //       // print("đây này" + duration.toString());
+    //       sliderMax  = newDuration.inSeconds.toDouble();
+    //     });
+    //   }
+    //
+    // });
+    //
+    // audioPlayer.onPositionChanged.listen((newPosition) {
+    //   if (mounted) {
+    //     setState(() {
+    //       position=newPosition;
+    //
+    //     });
+    //   }
+    //
+    // });
+    //
+    // setAudio();
   }
 
-  Future setAudio() async {
-    audioPlayer.setReleaseMode(ReleaseMode.loop);
-    String url = 'https://firebasestorage.googleapis.com/v0/b/german-for-u.appspot.com/o/so_dem2.mp3?alt=media&token=6b563c5c-cf70-44ec-86de-f00c9b5da559';
-    audioPlayer.setSourceUrl(url);
-    await audioPlayer.pause();
+  Future setAudio(int index) async {
+    // audioPlayer.setReleaseMode(ReleaseMode.loop);
+    // String url = "https://firebasestorage.googleapis.com/v0/b/german-for-u.appspot.com/o/so_dem.mp3?alt=media&token=0605a7ec-4983-465c-9aa0-2e2e238f8c97";
+    // audioPlayer.setSourceUrl(slink);
+    //
+    // await audioPlayer.pause();
+
+    audioPlayers[index].setReleaseMode(ReleaseMode.loop);
+    audioPlayers[index].setSourceUrl(listBTL[index].link);
+    await audioPlayers[index].pause();
   }
 
 
   @override
   void dispose() {
-    audioPlayer.dispose();
+    for(var player in audioPlayers){
+      player.dispose();
+    }
     super.dispose();
   }
 
@@ -84,12 +221,11 @@ class _chiTietLuyenNgheState extends State<chiTietLuyenNghe> {
   }
   String? selectedAnswer;
 
+
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-
-
-    // return Placeholder();
 
     return Material(
       child: SafeArea(
@@ -100,119 +236,299 @@ class _chiTietLuyenNgheState extends State<chiTietLuyenNghe> {
             backgroundColor: Color(0xFF007C1B),
             toolbarHeight: 70,
           ),
-          body: Column(
-            children: [
-              Center(
-                child: Container(
-                  margin: EdgeInsets.only(top: 26),
-                  height: size.height * 0.40,
-                  width: size.width*0.85,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(18),
-                    color: Colors.grey[200]
-                  ),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-
-                          IconButton(
-                            icon: Icon(
-                                isPlaying ? Icons.pause : Icons.play_arrow
-                            ),
-                            iconSize: 40,
-                            onPressed: () async {
-                              if(isPlaying) {
-                                await audioPlayer.pause();
-                              } else {
-                                String url = 'https://firebasestorage.googleapis.com/v0/b/german-for-u.appspot.com/o/so_dem2.mp3?alt=media&token=6b563c5c-cf70-44ec-86de-f00c9b5da559';
-                                // Source source = Source.fromString(url);
-                                // await audioPlayer.setSourceUrl(url);
-                                await audioPlayer.play(UrlSource(url));
-                              }
-                            },
-                          ),
-
-                          Slider(
-                            min: 0,
-                            max: sliderMax,
-                            value: position.inSeconds.toDouble(),
-                            thumbColor: Colors.green,
-
-                            onChanged: (value) async {
-                              final positions = Duration(seconds: value.toInt());
-                              await audioPlayer.seek(positions);
-                              await audioPlayer.resume();
-                            },
-                          ),
-
-                          Text(
-                            formatTime(duration - position),
-                          ),
-
-                        ],
-                      ),
-
-
-                      Expanded(
-                        child: ListView(
-                          padding: EdgeInsets.all(16.0),
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return Center(
+                      child: Container(
+                        margin: EdgeInsets.only(top: 26),
+                        height: 400,
+                        width: size.width * 0.85,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(18),
+                            color: Colors.grey[200]),
+                        child: Column(
                           children: [
-                            RadioListTile<String>(
-                              title: Text('Answer A'),
-                              value: 'A',
-                              groupValue: selectedAnswer,
-                              onChanged: (value) {
-                                setState(() {
-                                  selectedAnswer = value;
-                                });
-                              },
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                IconButton(
+                                  icon: Icon(
+                                      isPlayingList[index] ? Icons.pause : Icons.play_arrow),
+                                  iconSize: 40,
+                                  onPressed: () async {
+                                    // print(listBTL.length);
+                                    print(lstDapAn[0]);
+
+
+                                    setState(() {
+                                      // Đảm bảo chỉ container được bấm vào mới được cập nhật trạng thái chơi nhạc
+                                      isPlayingList[index] = !isPlayingList[index];
+                                    });
+                                    if (isPlayingList[index]) {
+                                      // Chạy file mp3 khi container được bấm vào
+                                      // await audioPlayer.setSourceUrl(url)
+                                      await audioPlayers[index].play(UrlSource(listBTL[index].link));
+                                      // setAudio(index);
+                                    } else {
+                                      // Tạm dừng phát nhạc khi container được bấm vào một lần nữa
+                                      // await audioPlayer.pause();
+                                      await audioPlayers[index].pause();
+                                    }
+
+                                    // if (isPlaying) {
+                                    //   await audioPlayer.pause();
+                                    // } else {
+                                    //   // String url =
+                                    //   //     "https://firebasestorage.googleapis.com/v0/b/german-for-u.appspot.com/o/so_dem.mp3?alt=media&token=0605a7ec-4983-465c-9aa0-2e2e238f8c97";
+                                    //   // Source source = Source.fromString(url);
+                                    //   // await audioPlayer.setSourceUrl(url);
+                                    //   await audioPlayer.play(UrlSource(listBTL[index].link));
+                                    // }
+                                  },
+                                ),
+                                Slider(
+                                  min: 0,
+                                  max: durations[index].inSeconds.toDouble(),
+                                  value: positions[index].inSeconds.toDouble(),
+                                  thumbColor: Colors.green,
+                                  onChanged: (value) async {
+                                    // final positionss =
+                                    // Duration(seconds: value.toInt());
+                                    await audioPlayers[index].seek(
+                                      Duration(seconds: value.toInt())
+                                    );
+                                    setState(() {
+                                      positions[index] = Duration(seconds: value.toInt());
+                                    });
+                                    await audioPlayers[index].resume();
+                                  },
+                                ),
+                                Text(
+                                  formatTime(durations[index] - positions[index]),
+                                ),
+                              ],
                             ),
-                            RadioListTile<String>(
-                              title: Text('Answer B'),
-                              value: 'B',
-                              groupValue: selectedAnswer,
-                              onChanged: (value) {
-                                setState(() {
-                                  selectedAnswer = value;
-                                });
-                              },
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 20),
+                              child: Text(listBTL[index].cauHoi),
                             ),
-                            RadioListTile<String>(
-                              title: Text('Answer C'),
-                              value: 'C',
-                              groupValue: selectedAnswer,
-                              onChanged: (value) {
-                                setState(() {
-                                  selectedAnswer = value;
-                                });
-                              },
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 20),
+                              child: Text(listBTL[index].tieuDe),
                             ),
-                            RadioListTile<String>(
-                              title: Text('Answer D'),
-                              value: 'D',
-                              groupValue: selectedAnswer,
-                              onChanged: (value) {
-                                setState(() {
-                                  selectedAnswer = value;
-                                });
-                              },
+                            Expanded(
+                              child: ListView(
+                                physics: NeverScrollableScrollPhysics(),
+                                padding: EdgeInsets.all(16.0),
+                                children: [
+
+                                  RadioListTile<String>(
+                                    title: Text(listBTL[index].A),
+                                    value: 'A',
+                                    groupValue: selectedAnswer,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        selectedAnswer = value;
+                                      });
+                                      lstDapAn[index] = "A";
+                                    },
+
+                                  ),
+                                  RadioListTile<String>(
+                                    title: Text(listBTL[index].B),
+                                    value: 'B',
+                                    groupValue: selectedAnswer,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        selectedAnswer = value;
+                                      });
+                                      lstDapAn[index] = "B";
+                                    },
+                                  ),
+                                  if(listBTL[index].C != "") ... [
+                                    RadioListTile<String>(
+                                      title: Text(listBTL[index].C),
+                                      value: 'C',
+                                      groupValue: selectedAnswer,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          selectedAnswer = value;
+                                        });
+                                        lstDapAn[index] = "C";
+                                      },
+                                    ),
+                                  ],
+                                  if(listBTL[index].D != "") ... [
+                                    RadioListTile<String>(
+                                      title: Text(listBTL[index].D),
+                                      value: 'D',
+                                      groupValue: selectedAnswer,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          selectedAnswer = value;
+                                        });
+                                        lstDapAn[index] = "D";
+                                      },
+                                    ),
+                                  ],
+
+                                ],
+                              ),
                             ),
                           ],
                         ),
                       ),
-
-
-                    ],
-                  ),
+                    );
+                  },
+                  itemCount: listBTL.length,
                 ),
-              ),
 
-            ],
+                SizedBox(height: 40,)
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 }
+
+
+
+// Material(
+//   child: SafeArea(
+//     child: Scaffold(
+//       appBar: AppBar(
+//         centerTitle: true,
+//         title: Text("Test 1"),
+//         backgroundColor: Color(0xFF007C1B),
+//         toolbarHeight: 70,
+//       ),
+//       body: Column(
+//         children: [
+//           Center(
+//             child: Container(
+//               margin: EdgeInsets.only(top: 26),
+//               height: size.height * 0.40,
+//               width: size.width*0.85,
+//               decoration: BoxDecoration(
+//                 borderRadius: BorderRadius.circular(18),
+//                 color: Colors.grey[200]
+//               ),
+//               child: Column(
+//                 children: [
+//                   Row(
+//                     mainAxisAlignment: MainAxisAlignment.start,
+//                     children: [
+//
+//                       IconButton(
+//                         icon: Icon(
+//                             isPlaying ? Icons.pause : Icons.play_arrow
+//                         ),
+//                         iconSize: 40,
+//                         onPressed: () async {
+//                           if(isPlaying) {
+//                             await audioPlayer.pause();
+//                           } else {
+//                             String url = "https://firebasestorage.googleapis.com/v0/b/german-for-u.appspot.com/o/so_dem.mp3?alt=media&token=0605a7ec-4983-465c-9aa0-2e2e238f8c97";
+//                             // Source source = Source.fromString(url);
+//                             // await audioPlayer.setSourceUrl(url);
+//                             await audioPlayer.play(UrlSource(slink));
+//                           }
+//                         },
+//                       ),
+//
+//                       Slider(
+//                         min: 0,
+//                         max: sliderMax,
+//                         value: position.inSeconds.toDouble(),
+//                         thumbColor: Colors.green,
+//
+//                         onChanged: (value) async {
+//                           final positions = Duration(seconds: value.toInt());
+//                           await audioPlayer.seek(positions);
+//                           await audioPlayer.resume();
+//                         },
+//                       ),
+//
+//                       Text(
+//                         formatTime(duration - position),
+//                       ),
+//
+//                     ],
+//                   ),
+//
+//                   Padding(
+//                     padding: const EdgeInsets.symmetric(horizontal: 20),
+//                     child: Text(question),
+//                   ),
+//                   Padding(
+//                     padding: const EdgeInsets.symmetric(horizontal: 20),
+//                     child: Text(title),
+//                   ),
+//
+//
+//                   Expanded(
+//                     child: ListView(
+//                       padding: EdgeInsets.all(16.0),
+//                       children: [
+//                         RadioListTile<String>(
+//                           title: Text('Answer A'),
+//                           value: 'A',
+//                           groupValue: selectedAnswer,
+//                           onChanged: (value) {
+//                             setState(() {
+//                               selectedAnswer = value;
+//                             });
+//                           },
+//                         ),
+//                         RadioListTile<String>(
+//                           title: Text('Answer B'),
+//                           value: 'B',
+//                           groupValue: selectedAnswer,
+//                           onChanged: (value) {
+//                             setState(() {
+//                               selectedAnswer = value;
+//                             });
+//                           },
+//                         ),
+//                         RadioListTile<String>(
+//                           title: Text('Answer C'),
+//                           value: 'C',
+//                           groupValue: selectedAnswer,
+//                           onChanged: (value) {
+//                             setState(() {
+//                               selectedAnswer = value;
+//                             });
+//                           },
+//                         ),
+//                         RadioListTile<String>(
+//                           title: Text('Answer D'),
+//                           value: 'D',
+//                           groupValue: selectedAnswer,
+//                           onChanged: (value) {
+//                             setState(() {
+//                               selectedAnswer = value;
+//                             });
+//                           },
+//                         ),
+//                       ],
+//                     ),
+//                   ),
+//
+//
+//                 ],
+//               ),
+//             ),
+//           ),
+//
+//         ],
+//       ),
+//     ),
+//   ),
+// );

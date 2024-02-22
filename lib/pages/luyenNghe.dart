@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:german_for_u/pages/chiTietLuyenNghe.dart';
 
@@ -9,6 +10,38 @@ class luyenNghe extends StatefulWidget {
 }
 
 class _luyenNgheState extends State<luyenNghe> {
+
+  List<String> listBT = [];
+  List<String> listId = [];
+  late String id;
+
+  Future getBaiLuyen () async {
+    final result = await FirebaseFirestore.instance.collection('baiTapLuyen')
+        .where('sMaKN', isEqualTo: "KN_N")
+        .get();
+
+    if(result.docs.isNotEmpty) {
+      result.docs.forEach((value) {
+        listBT.add(value['sTenBTL']);
+        listId.add(value.id);
+      });
+    }
+
+    if(mounted ){
+      setState(() {
+
+      });
+    }
+
+
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getBaiLuyen();
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -32,7 +65,7 @@ class _luyenNgheState extends State<luyenNghe> {
                   Navigator.push (
                       context,
                       MaterialPageRoute(builder: (context) {
-                        return chiTietLuyenNghe();
+                        return chiTietLuyenNghe(maBT: listId[index],);
                       }));
                 },
 
@@ -67,7 +100,7 @@ class _luyenNgheState extends State<luyenNghe> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
-                                        'TEST ' + (index + 1).toString(),
+                                        listBT[index],
                                         style: TextStyle(
                                             fontSize: 18,
                                             fontWeight: FontWeight.w700
@@ -104,76 +137,14 @@ class _luyenNgheState extends State<luyenNghe> {
                 ),
               );
             },
-            itemCount: 20,),
+            itemCount: listBT.length,),
         ),
 
       ),
     );
   }
+
+
 }
 
 
-// body: Column(
-//     SizedBox(height: 30,),
-//     Center(
-//       child: Container(
-//         width: size.width * 0.85,
-//         height: size.height* 0.1,
-//
-//         decoration: BoxDecoration(
-//           borderRadius: BorderRadius.circular(18),
-//           color: Colors.grey[200],
-//         ),
-//         child: Stack(
-//           children: [
-//             Positioned(
-//               top: 0,
-//               left: 10,
-//               bottom: 0,
-//               child: Row(
-//                 children: [
-//                   ImageIcon(
-//                     AssetImage('images/headphone.png')
-//                   ),
-//
-//                   SizedBox(width: 20),
-//
-//                   Column(
-//                     crossAxisAlignment: CrossAxisAlignment.start,
-//                     mainAxisAlignment: MainAxisAlignment.center,
-//                     children: [
-//                       Text(
-//                         'TEST 1',
-//                         style: TextStyle(
-//                           fontSize: 18,
-//                           fontWeight: FontWeight.w700
-//                         ),
-//                       ),
-//
-//                       Text(
-//                         'Luyện nghe bài tập này',
-//                         style: TextStyle(
-//                             fontSize: 13
-//                         ),
-//                       ),
-//
-//                     ],
-//                   ),
-//                   SizedBox(width: 50),
-//                   Text(
-//                     '70%',
-//                     style: TextStyle(
-//                       fontWeight: FontWeight.w700,
-//                       fontSize: 15
-//                     ),
-//                   )
-//
-//                 ],
-//               ),
-//             )
-//           ],
-//         ),
-//       ),
-//     )
-//   ],
-// ),
