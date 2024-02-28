@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:german_for_u/pages/CTLN.dart';
 import 'package:german_for_u/pages/chiTietLuyenNghe.dart';
 
 class luyenNghe extends StatefulWidget {
@@ -65,8 +66,10 @@ class _luyenNgheState extends State<luyenNghe> {
                   Navigator.push (
                       context,
                       MaterialPageRoute(builder: (context) {
-                        return chiTietLuyenNghe(maBT: listId[index],);
+                        return CTLN(maBT: listId[index]);
+                        // return chiTietLuyenNghe(maBT: listId[index],);
                       }));
+
                 },
 
                 child: Column(

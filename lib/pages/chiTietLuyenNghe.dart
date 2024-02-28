@@ -27,6 +27,7 @@ class _chiTietLuyenNgheState extends State<chiTietLuyenNghe> {
   List<AudioPlayer> audioPlayers = [];
 
   List<String> lstDapAn = [];
+  List<String> listDapAnCX = [];
 
 
   double sliderMax = 0;
@@ -54,15 +55,15 @@ class _chiTietLuyenNgheState extends State<chiTietLuyenNghe> {
 
         if(!element.data().containsKey('D') && element.data().containsKey('C')){
           listBTL.add(new obj_luyenNghe(element.id, element['sMaBTL'], element['sLink'], element['sDeBai'], element['sTitle'],
-              element['A'], element['B'], element['C'], ""));
+              element['A'], element['B'], element['C'], "", element['sDapAn']));
         }
         else if(!element.data().containsKey('C')){
           listBTL.add(new obj_luyenNghe(element.id, element['sMaBTL'], element['sLink'], element['sDeBai'], element['sTitle'],
-              element['A'], element['B'], "", ""));
+              element['A'], element['B'], "", "", element['sDapAn']));
         }
         else if(element.data().containsKey('D')){
           listBTL.add(new obj_luyenNghe(element.id, element['sMaBTL'], element['sLink'], element['sDeBai'], element['sTitle'],
-              element['A'], element['B'], element['C'], element['D']));
+              element['A'], element['B'], element['C'], element['D'], element['sDapAn']));
 
         }
       }
@@ -91,9 +92,15 @@ class _chiTietLuyenNgheState extends State<chiTietLuyenNghe> {
 
 
 
-    final CTBTN = await FirebaseFirestore.instance.collection('CT_BaiTapNghe')
-        .where('sMaCTBTL', isEqualTo: CTBTL.docs[1].id)
+    final DAD = await FirebaseFirestore.instance.collection('CT_BaiTapNghe')
+        .where('sMaBTL', isEqualTo: widget.maBT)
         .get();
+
+    if(DAD.docs.isNotEmpty) {
+      DAD.docs.forEach((element) {
+        listDapAnCX.add(element['sDapAn']);
+      });
+    }
 
 
     listBTL.sort((a,b) => a.tieuDe.compareTo(b.tieuDe));
@@ -103,6 +110,7 @@ class _chiTietLuyenNgheState extends State<chiTietLuyenNghe> {
       audioPlayers = List.generate(listBTL.length, (index) => AudioPlayer());
       durations = List.generate(listBTL.length, (index) => Duration.zero);
       positions = List.generate(listBTL.length, (index) => Duration.zero);
+      selectedAnswer = List.generate(listBTL.length, (index) => "");
     });
 
 
@@ -219,7 +227,7 @@ class _chiTietLuyenNgheState extends State<chiTietLuyenNghe> {
       
     ].join(':');
   }
-  String? selectedAnswer;
+  List<String> selectedAnswer = [];
 
 
 
@@ -262,7 +270,7 @@ class _chiTietLuyenNgheState extends State<chiTietLuyenNghe> {
                                   iconSize: 40,
                                   onPressed: () async {
                                     // print(listBTL.length);
-                                    print(lstDapAn[0]);
+                                    // print(lstDapAn[5]);
 
 
                                     setState(() {
@@ -330,10 +338,10 @@ class _chiTietLuyenNgheState extends State<chiTietLuyenNghe> {
                                   RadioListTile<String>(
                                     title: Text(listBTL[index].A),
                                     value: 'A',
-                                    groupValue: selectedAnswer,
+                                    groupValue: selectedAnswer[index],
                                     onChanged: (value) {
                                       setState(() {
-                                        selectedAnswer = value;
+                                        selectedAnswer[index] = value!;
                                       });
                                       lstDapAn[index] = "A";
                                     },
@@ -342,10 +350,10 @@ class _chiTietLuyenNgheState extends State<chiTietLuyenNghe> {
                                   RadioListTile<String>(
                                     title: Text(listBTL[index].B),
                                     value: 'B',
-                                    groupValue: selectedAnswer,
+                                    groupValue: selectedAnswer[index],
                                     onChanged: (value) {
                                       setState(() {
-                                        selectedAnswer = value;
+                                        selectedAnswer[index] = value!;
                                       });
                                       lstDapAn[index] = "B";
                                     },
@@ -354,10 +362,10 @@ class _chiTietLuyenNgheState extends State<chiTietLuyenNghe> {
                                     RadioListTile<String>(
                                       title: Text(listBTL[index].C),
                                       value: 'C',
-                                      groupValue: selectedAnswer,
+                                      groupValue: selectedAnswer[index],
                                       onChanged: (value) {
                                         setState(() {
-                                          selectedAnswer = value;
+                                          selectedAnswer[index] = value!;
                                         });
                                         lstDapAn[index] = "C";
                                       },
@@ -367,10 +375,10 @@ class _chiTietLuyenNgheState extends State<chiTietLuyenNghe> {
                                     RadioListTile<String>(
                                       title: Text(listBTL[index].D),
                                       value: 'D',
-                                      groupValue: selectedAnswer,
+                                      groupValue: selectedAnswer[index],
                                       onChanged: (value) {
                                         setState(() {
-                                          selectedAnswer = value;
+                                          selectedAnswer[index] = value!;
                                         });
                                         lstDapAn[index] = "D";
                                       },
@@ -388,7 +396,29 @@ class _chiTietLuyenNgheState extends State<chiTietLuyenNghe> {
                   itemCount: listBTL.length,
                 ),
 
-                SizedBox(height: 40,)
+                SizedBox(height: 20,),
+
+                Center(
+                  child: MaterialButton(
+                    minWidth: 200,
+                    height: 60,
+                    color: Colors.green,
+                    onPressed: () {
+                      int count = 0;
+                      for (int i=0; i< listBTL.length; i++) {
+                        if(lstDapAn[i] == listBTL[i].dapAn){
+                          count ++;
+                        }
+                      }
+                      print(count);
+                    },
+                    child: Text("Kiểm tra", style: TextStyle(
+                      color: Colors.white70
+                    ),),
+                  ),
+                ),
+
+                SizedBox(height: 40,),
               ],
             ),
           ),

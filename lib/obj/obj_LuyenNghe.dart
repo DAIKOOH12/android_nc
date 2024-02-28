@@ -1,7 +1,13 @@
 class obj_luyenNghe {
-  late String _id, _maBTL, _link, _cauHoi, _tieuDe, _A, _B, _C, _D;
+  late String _id, _maBTL, _link, _cauHoi, _tieuDe, _A, _B, _C, _D, _dapAn;
 
-  obj_luyenNghe(this._id, this._maBTL, this._link, this._cauHoi, this._tieuDe, this._A, this._B, this._C, this._D);
+  obj_luyenNghe(this._id, this._maBTL, this._link, this._cauHoi, this._tieuDe, this._A, this._B, this._C, this._D, this._dapAn);
+
+  get dapAn => _dapAn;
+
+  set dapAn(value) {
+    _dapAn = value;
+  }
 
   get A => _A;
 

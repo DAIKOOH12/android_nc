@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:german_for_u/auth/main_page.dart';
+import 'package:german_for_u/pages/tienDo.dart';
+import 'package:german_for_u/pages/tienDoHomNay.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 class taiKhoan extends StatefulWidget {
   const taiKhoan({super.key});
@@ -24,7 +26,11 @@ class _taiKhoanState extends State<taiKhoan> {
           body: Column(
             children: [
               MaterialButton(
-                onPressed: (){},
+                onPressed: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context){
+                    return tienDoHomNay();
+                  }));
+                },
                 minWidth: size.width * 0.75,
                 color: Colors.grey[200],
                 child: Text(

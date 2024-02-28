@@ -5,6 +5,8 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
 
+  DateTime today = DateTime.now();
+
   signInWithGoogle() async {
     final GoogleSignInAccount? ggUser = await GoogleSignIn().signIn();
 
@@ -20,12 +22,16 @@ class AuthService {
     var result =  await FirebaseAuth.instance.signInWithCredential(credential);
     if(result.additionalUserInfo!.isNewUser){
       try {
+        // String ngayBatDau =
         // await FirebaseFirestore.instance.collection('users').add({
         //   'hoTen' : name,
         // });
         var user = result.user;
         Map<String, dynamic> data = {
           'hoTen': user!.displayName,
+          'dNgayBatDau': today.day.toString() + "/"
+              + today.month.toString() + "/"
+              + today.year.toString(),
           // Thêm các trường khác nếu cần
         };
         await FirebaseFirestore.instance.collection('user').doc(user.email).set(data);
@@ -54,6 +60,9 @@ class AuthService {
           var user = userCredential.user;
           Map<String, dynamic> data = {
             'hoTen': user!.displayName,
+            'dNgayBatDau': today.day.toString() + "/"
+                + today.month.toString() + "/"
+                + today.year.toString(),
             // Thêm các trường khác nếu cần
           };
           await FirebaseFirestore.instance.collection('user').doc(user.email).set(data);

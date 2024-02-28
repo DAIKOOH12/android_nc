@@ -33,12 +33,16 @@ class _dangKyState extends State<dangKy> {
   }
 
   Future addUser (String name, String email) async {
+    DateTime today = DateTime.now();
     try {
       // await FirebaseFirestore.instance.collection('users').add({
       //   'hoTen' : name,
       // });
       Map<String, dynamic> data = {
         'hoTen': name,
+        'dNgayBatDau': today.day.toString() + "/"
+            + today.month.toString() + "/"
+            + today.year.toString(),
         // Thêm các trường khác nếu cần
       };
       await FirebaseFirestore.instance.collection('user').doc(email).set(data);

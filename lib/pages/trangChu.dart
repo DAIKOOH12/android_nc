@@ -43,9 +43,39 @@ class _trangChuState extends State<trangChu> {
 
   }
 
+  Future createTienDo () async {
+    DateTime today = DateTime.now();
+    final getTienDo = await FirebaseFirestore.instance.collection('tienDo')
+        .where('sEmail', isEqualTo: FirebaseAuth.instance.currentUser?.email)
+        .where('dNgay', isEqualTo: today.day.toString() + "/" + today.month.toString()+ "/" + today.year.toString())
+        .get();
+
+    if(getTienDo.docs.isNotEmpty) {
+      print("Đã có");
+    }
+    else {
+      print("kkkk");
+      try {
+        await FirebaseFirestore.instance.collection('tienDo').add(
+            {
+              'sEmail' : FirebaseAuth.instance.currentUser?.email,
+              'dNgay' : today.day.toString() + "/" + today.month.toString()+ "/" + today.year.toString(),
+              'iTuVung': 0,
+              'iNghe': 0,
+              'iNguPhap' : 0 ,
+            }
+        );
+      }catch (e) {
+        print(e.toString());
+      }
+
+    }
+  }
+
   @override
   void initState() {
     super.initState();
+    createTienDo();
     getName().then((value) => setState((){
       name = value;
     }));

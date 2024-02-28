@@ -180,7 +180,7 @@ class _tuVungState extends State<tuVung> {
                                   ),
                                 ),
                                 SizedBox(width: 20,),
-                                Text(_listTenChuDe[index]),
+                                Container(width: size.width *0.45,child: Text(_listTenChuDe[index])),
                               ],
                             ),
                           ),
