@@ -17,18 +17,73 @@ class _dangKyState extends State<dangKy> {
   final _confirmPassword = TextEditingController();
   final _name = TextEditingController();
 
-  Future SignUp() async {
+  List<String> error = [];
 
-    //create user
-    if(confirmPass()) {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: _emailController.text.trim(),
-          password: _passwordController.text
-      );
-      addUser(_name.text.trim(), _emailController.text.trim());
+  Future SignUp() async {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+
+
+    error=[];
+    if(_emailController.text.trim() == ""){
+      setState(() {
+        error.add("Email không được để trống");
+      });
+    }
+    if(_name.text.trim() == ""){
+      setState(() {
+        error.add("Họ tên không được để trống");
+      });
+    }
+    if(_passwordController.text.trim() == ""){
+      setState(() {
+        error.add("Mật khẩu không được để trống");
+      });
     }
 
-    //save user
+
+    if(confirmPass()) {
+      try {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+            email: _emailController.text.trim(),
+            password: _passwordController.text
+        );
+        addUser(_name.text.trim(), _emailController.text.trim());
+
+      }
+
+      catch (e) {
+        if(e.toString().contains("invalid-email")) {
+          setState(() {
+
+          error.add("Email chưa đúng định dạng");
+          });
+        }
+        if(e.toString().contains('weak-password')) {
+          setState(() {
+          error.add("Mật khẩu phải có độ dài từ 6 trở lên");
+
+          });
+        }
+
+        print(e.toString());
+      }
+    }
+    else {
+      setState(() {
+      error.add("Mật khẩu chưa khớp");
+
+      });
+    }
+
+    Navigator.of(context).pop();
+
 
   }
 
@@ -52,8 +107,10 @@ class _dangKyState extends State<dangKy> {
 
   }
 
-  bool confirmPass(){
-    if( _passwordController.text.trim() == _confirmPassword.text.trim()){
+  bool confirmPass() {
+    var pass = _passwordController.text.trim();
+    var confirm =  _confirmPassword.text.trim();
+    if( pass == confirm){
       return true;
     }
     else return false;
@@ -78,7 +135,7 @@ class _dangKyState extends State<dangKy> {
 
     return SafeArea(
         child: Scaffold(
-
+          appBar: AppBar(),
           body: SingleChildScrollView(
             child: Column(
               children: [
@@ -351,10 +408,43 @@ class _dangKyState extends State<dangKy> {
                   ),
                 ),
 
+                //Báo lỗi
+                SizedBox(height: 7,),
+                Container(
+                  width: size.width * 0.85,
+                  child: Text(
+                    error.join(", "),
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 10
+                    ),
+                  ),
+                ),
+
+                SizedBox(height: 20,),
+                GestureDetector(
+                  onTap:
+                    widget.showDangNhap,
+                  child: Container(
+                    width: size.width,
+                    padding: EdgeInsets.only(right: 20),
+                    child: Text(
+                      'Đăng nhập bằng tài khoản',
+                      textAlign: TextAlign.right,
+                      style: TextStyle(
+                        color: Color(0xFF3B7DBA),
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500
+                      ),
+                    ),
+                  ),
+                ),
+
 
                 // nút đăng ký
                 SizedBox(
-                  height: 40,
+                  height: 20,
                 ),
                 GestureDetector(
                   onTap: SignUp,

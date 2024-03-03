@@ -1,4 +1,4 @@
-package com.example.german_for_u;
+package hou.edu.vn.german_for_u;
 
 import io.flutter.embedding.android.FlutterActivity;
 

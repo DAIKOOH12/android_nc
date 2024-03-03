@@ -28,7 +28,7 @@ if (flutterVersionName == null) {
 //classpath ("com.google.gms:google-services:4.4.0")
 
 android {
-    namespace "com.example.german_for_u"
+    namespace "hou.edu.vn.german_for_u"
     compileSdkVersion flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
 
@@ -39,7 +39,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.example.german_for_u"
+        applicationId "hou.edu.vn.german_for_u"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
         minSdkVersion flutter.minSdkVersion

@@ -17,10 +17,10 @@ class _CT_tienDoHomNayState extends State<CT_tienDoHomNay> {
 
   // obj_tienDo tienBo = widget.tienDo;
 
-  double tuVung = 0.0;
-  double nguPhap = 0.0;
-  double nghe = 0.0;
-  double tong = 0.0;
+  // double tuVung = 0.0;
+  // double nguPhap = 0.0;
+  // double nghe = 0.0;
+  // double tong = 0.0;
   double _percent = 0.0;
 
   
@@ -34,14 +34,14 @@ class _CT_tienDoHomNayState extends State<CT_tienDoHomNay> {
 
       getTS.docs.forEach((element) {
         // print(element['iTuVung'].toDouble());
-        tuVung = element['iTuVung'].toDouble();
-        nghe = element['iNghe'].toDouble();
-        nguPhap = element['iNguPhap'].toDouble();
+        // tuVung = element['iTuVung'].toDouble();
+        // nghe = element['iNghe'].toDouble();
+        // nguPhap = element['iNguPhap'].toDouble();
       });
     }
     setState(() {
-      tong =(nghe+nguPhap+tuVung);
-      _percent = tong/30;
+      // tong =(nghe+nguPhap+tuVung);
+      // _percent = tong/30;
     });
 
   }
@@ -51,6 +51,7 @@ class _CT_tienDoHomNayState extends State<CT_tienDoHomNay> {
   void initState() {
     super.initState();
     getThongSo();
+
     // print((nghe+nguPhap+tuVung)/30.0);
   }
 
@@ -110,7 +111,7 @@ class _CT_tienDoHomNayState extends State<CT_tienDoHomNay> {
                       Text(
                         (widget.tienDo.nguPhap +
                             widget.tienDo.tuVung +
-                            widget.tienDo.nghe ).toString()+ "/30 phút",
+                            widget.tienDo.nghe ).toStringAsFixed(2)+ "/30 phút",
                         style: TextStyle(
                           fontSize: 24,
                           color: Color(0xFF0EAD00),

@@ -1,4 +1,6 @@
 // import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:german_for_u/pages/BT_nguPhap.dart';
@@ -25,7 +27,29 @@ class _newState extends State<CT_nguPhap> {
 
   String urlPDFPath = "";
   bool loaded = false;
+  DateTime startTime = DateTime.now();
+  int dem = 0;
+  String id = "";
 
+  Future getDem() async {
+    var date = DateTime.now();
+    var dNgay = date.day.toString() + '/' + date.month.toString() + '/' + date.year.toString();
+    print(dNgay);
+    final getDem = await FirebaseFirestore.instance.collection('tienDo')
+        .where('sEmail', isEqualTo: FirebaseAuth.instance.currentUser!.email)
+        .where('dNgay', isEqualTo: dNgay)
+        .get();
+
+    if(getDem.docs.isNotEmpty) {
+      getDem.docs.forEach((element) {
+        setState(() {
+          dem = element['iNguPhap'];
+          id = element.id;
+        });
+      });
+    }
+
+  }
 
 
   Future<File> getFileFromUrl(String url) async {
@@ -35,6 +59,21 @@ class _newState extends State<CT_nguPhap> {
     File file = File("${dir.path}/" + "testonline.pdf");
     File urlFile = await file.writeAsBytes(bytes);
     return urlFile;
+  }
+
+  Future updateNguPhap(int dem2) async {
+    try {
+      await FirebaseFirestore.instance.collection('tienDo')
+          .doc(id)
+          .update(
+          {
+            'iNguPhap': dem + dem2
+          }
+      );
+      print(dem+dem2);
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   @override
@@ -47,7 +86,18 @@ class _newState extends State<CT_nguPhap> {
         })
       },
     );
+    getDem();
     super.initState();
+  }
+
+
+  @override
+  void dispose() {
+    super.dispose();
+    DateTime endTime = DateTime.now();
+    Duration timeOpen = endTime!.difference(startTime);
+    print('Page opened for: ${timeOpen.inSeconds} seconds');
+    updateNguPhap(timeOpen.inSeconds);
   }
 
   @override

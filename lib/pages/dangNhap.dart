@@ -17,11 +17,50 @@ class _dangNhapState extends State<dangNhap> {
 
   final _emailController =  TextEditingController();
   final _passwordController = TextEditingController();
+  List<String> error = [];
 
   Future SignIn() async {
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: _emailController.text.trim(), password: _passwordController.text.trim()
-    );
+
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        });
+    error = [];
+    if(_passwordController.text.trim() == "") {
+      setState(() {
+        error.add("Bạn chưa nhập mật khẩu");
+      });
+    }
+    if(_emailController.text.trim() == "") {
+      setState(() {
+        error.add("Bạn chưa nhập email");
+      });
+    }
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: _emailController.text.trim(), password: _passwordController.text.trim()
+      );
+    }
+    catch(e) {
+      print(e.toString());
+      if(e.toString().contains('invalid-credential'))
+      {
+        setState(() {
+          error.add("Tài khoản hoặc mật khẩu không chính xác!");
+        });
+      }
+      if(e.toString().contains('invalid-email')) {
+        setState(() {
+          error.add("Email chưa đúng định dạng");
+        });
+      }
+      
+    }
+
+    Navigator.of(context).pop();
   }
 
 
@@ -86,7 +125,7 @@ class _dangNhapState extends State<dangNhap> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   GestureDetector(
-                    onTap: () => AuthService().signInWithFacebook(),
+                    onTap: () => AuthService(context).signInWithFacebook(),
                     child: Container(
                       width: 40,
                       height: 41,
@@ -100,7 +139,11 @@ class _dangNhapState extends State<dangNhap> {
                   ),
                   const SizedBox(width: 50),
                   GestureDetector(
-                    onTap: () => AuthService().signInWithGoogle(),
+                    onTap: () {
+
+                      AuthService(context).signInWithGoogle();
+                      // Navigator.of(context).pop();
+                    },
                     child: Container(
                       width: 40,
                       height: 41,
@@ -246,6 +289,20 @@ class _dangNhapState extends State<dangNhap> {
                     ),
                   ),
                 ],
+              ),
+            ),
+
+            //Hiện lỗi đăng nhập
+            SizedBox(height: 7,),
+            Container(
+              width: 298,
+              child: Text(
+                error.join(", "),
+                style: TextStyle(
+                  color: Colors.red,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w400
+                ),
               ),
             ),
 

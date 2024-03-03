@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:german_for_u/obj/DT_tuVung.dart';
@@ -22,14 +23,65 @@ class _CT_TuVungState extends State<CT_TuVung> {
   List<String> _listNghia = [];
   List<DT_tuVung> lst = [];
 
+  DateTime startTime = DateTime.now();
   FlutterTts flutterTts = FlutterTts();
+
+  int dem = 0;
+  String id = "";
+
+  Future getDem() async {
+    var date = DateTime.now();
+    var dNgay = date.day.toString() + '/' + date.month.toString() + '/' + date.year.toString();
+    print(dNgay);
+    final getDem = await FirebaseFirestore.instance.collection('tienDo')
+        .where('sEmail', isEqualTo: FirebaseAuth.instance.currentUser!.email)
+        .where('dNgay', isEqualTo: dNgay)
+        .get();
+
+    if(getDem.docs.isNotEmpty) {
+      getDem.docs.forEach((element) {
+        setState(() {
+          dem = element['iTuVung'];
+          id = element.id;
+        });
+      });
+    }
+
+  }
 
   @override
   void initState() {
     super.initState();
     getTuVung();
+    getDem();
+    // startTime = DateTime.now();
   }
 
+
+  @override
+  void dispose() {
+    super.dispose();
+    DateTime endTime = DateTime.now();
+    Duration timeOpen = endTime!.difference(startTime);
+    print('Page opened for: ${timeOpen.inSeconds} seconds');
+    upDateTuVung(timeOpen.inSeconds);
+    // super.dispose();
+  }
+
+  Future upDateTuVung(int dem2) async {
+    try {
+      await FirebaseFirestore.instance.collection('tienDo')
+          .doc(id)
+          .update(
+        {
+          'iTuVung': dem + dem2
+        }
+      );
+      print(dem+dem2);
+    } catch (e) {
+      print(e.toString());
+    }
+  }
 
   Future<void> getTuVung() async {
     final snapShot = await FirebaseFirestore.instance

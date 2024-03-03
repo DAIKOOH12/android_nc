@@ -1,7 +1,8 @@
-import 'dart:ffi';
+// import 'dart:ffi';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:german_for_u/obj/obj_DapAnLN.dart';
 import 'package:german_for_u/obj/obj_LuyenNghe.dart';
@@ -37,6 +38,45 @@ class _chiTietLuyenNgheState extends State<CTLN> {
   int ind = 0;
 
   List<obj_luyenNghe> listBTL = [];
+
+  int dem = 0;
+  String id = "";
+  DateTime startTime = DateTime.now();
+
+  Future getDem() async {
+    var date = DateTime.now();
+    var dNgay = date.day.toString() + '/' + date.month.toString() + '/' + date.year.toString();
+    print(dNgay);
+    final getDem = await FirebaseFirestore.instance.collection('tienDo')
+        .where('sEmail', isEqualTo: FirebaseAuth.instance.currentUser!.email)
+        .where('dNgay', isEqualTo: dNgay)
+        .get();
+
+    if(getDem.docs.isNotEmpty) {
+      getDem.docs.forEach((element) {
+        setState(() {
+          dem = element['iNghe'];
+          id = element.id;
+        });
+      });
+    }
+
+  }
+
+  Future updateNghe(int dem2) async {
+    try {
+      await FirebaseFirestore.instance.collection('tienDo')
+          .doc(id)
+          .update(
+          {
+            'iNghe': dem + dem2
+          }
+      );
+      print(dem+dem2);
+    } catch (e) {
+      print(e.toString());
+    }
+  }
 
 
   Future getBaiTapLuyen() async {
@@ -106,7 +146,12 @@ class _chiTietLuyenNgheState extends State<CTLN> {
 
 
     super.initState();
-    getBaiTapLuyen();
+
+      getDem();
+    Future.delayed(Duration(milliseconds: 1000), () {
+      getBaiTapLuyen();
+    });
+
 
     audioPlayer.onDurationChanged.listen((event) {
       setState(() {
@@ -210,6 +255,10 @@ class _chiTietLuyenNgheState extends State<CTLN> {
       audioPlayer.stop();
       audioPlayer.dispose();
     }
+    DateTime endTime = DateTime.now();
+    Duration timeOpen = endTime!.difference(startTime);
+    print('Page opened for: ${timeOpen.inSeconds} seconds');
+    updateNghe(timeOpen.inSeconds);
     super.dispose();
   }
 

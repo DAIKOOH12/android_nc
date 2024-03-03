@@ -1,9 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
+  BuildContext context;
+
+  AuthService(this.context);
 
   DateTime today = DateTime.now();
 
@@ -12,12 +16,24 @@ class AuthService {
 
     final GoogleSignInAuthentication ggAuth = await ggUser!.authentication;
 
+    if (ggUser == null) {
+      // Xử lý trường hợp không có người dùng đăng nhập
+      return null;
+    }
 
 
     final credential = GoogleAuthProvider.credential(
       accessToken: ggAuth.accessToken,
       idToken: ggAuth.idToken,
     );
+
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        });
 
     var result =  await FirebaseAuth.instance.signInWithCredential(credential);
     if(result.additionalUserInfo!.isNewUser){
@@ -39,7 +55,7 @@ class AuthService {
         print(e);
       }
     }
-
+    Navigator.of(context).pop();
     return result;
 
   }
