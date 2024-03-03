@@ -141,6 +141,7 @@ class _newState extends State<CT_nguPhap> {
                       })
                     );
                   },
+                  color: Colors.blue,
                   child: Text("Luyện tập"),
                 ),
 
