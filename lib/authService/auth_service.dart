@@ -65,29 +65,35 @@ class AuthService {
       final LoginResult result = await FacebookAuth.instance.login(
         permissions: ['email', 'public_profile']
       );
-      final OAuthCredential fbAuthCredential = FacebookAuthProvider.credential(result.accessToken!.token);
-      final userCredential =  await FirebaseAuth.instance.signInWithCredential(fbAuthCredential);
 
-      if(userCredential.additionalUserInfo!.isNewUser) {
-        try {
-          // await FirebaseFirestore.instance.collection('users').add({
-          //   'hoTen' : name,
-          // });
-          var user = userCredential.user;
-          Map<String, dynamic> data = {
-            'hoTen': user!.displayName,
-            'dNgayBatDau': today.day.toString() + "/"
-                + today.month.toString() + "/"
-                + today.year.toString(),
-            // Thêm các trường khác nếu cần
-          };
-          await FirebaseFirestore.instance.collection('user').doc(user.email).set(data);
-        } catch (e) {
-          print(e);
+      if(result.accessToken != null) {
+        final OAuthCredential fbAuthCredential = FacebookAuthProvider
+            .credential(result.accessToken!.token);
+        final userCredential = await FirebaseAuth.instance.signInWithCredential(
+            fbAuthCredential);
+
+        if(userCredential.additionalUserInfo!.isNewUser) {
+          try {
+            // await FirebaseFirestore.instance.collection('users').add({
+            //   'hoTen' : name,
+            // });
+            var user = userCredential.user;
+            Map<String, dynamic> data = {
+              'hoTen': user!.displayName,
+              'dNgayBatDau': today.day.toString() + "/"
+                  + today.month.toString() + "/"
+                  + today.year.toString(),
+              // Thêm các trường khác nếu cần
+            };
+            await FirebaseFirestore.instance.collection('user').doc(user.email).set(data);
+          } catch (e) {
+            print(e);
+          }
         }
+        return userCredential;
       }
 
-      return userCredential;
+
 
     } catch (e) {
       print('Đã xảy ra lỗi khi đăng nhập bằng Facebook: $e');
