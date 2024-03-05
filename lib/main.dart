@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:german_for_u/firebase_options.dart';
 import 'package:german_for_u/pages/dangKy.dart';
 
 import 'package:german_for_u/pages/dangNhap.dart';
@@ -67,7 +68,9 @@ Future main() async {
                appId: app_id,
                messagingSenderId: messagingSenderId,
                projectId: "german-for-u"))
-           : await Firebase.initializeApp();
+           : await Firebase.initializeApp(
+              options: DefaultFirebaseOptions.currentPlatform,
+            );
      }
        runApp(const MyApp());
 

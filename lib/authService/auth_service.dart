@@ -36,6 +36,7 @@ class AuthService {
         });
 
     var result =  await FirebaseAuth.instance.signInWithCredential(credential);
+
     if(result.additionalUserInfo!.isNewUser){
       try {
         // String ngayBatDau =
@@ -51,11 +52,13 @@ class AuthService {
           // Thêm các trường khác nếu cần
         };
         await FirebaseFirestore.instance.collection('user').doc(user.email).set(data);
+
       } catch (e) {
         print(e);
       }
     }
     Navigator.of(context).pop();
+
     return result;
 
   }
