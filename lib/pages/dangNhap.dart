@@ -112,69 +112,71 @@ class _dangNhapState extends State<dangNhap> {
               ),
             ),
 
+            SizedBox(height: 40,),
+
             // Facebook+google
-            SizedBox(
-              height: 40,
-            ),
-            Container(
-              width: 345,
-              height: 41,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  GestureDetector(
-                    onTap: () => AuthService(context).signInWithFacebook(),
-                    child: Container(
-                      width: 40,
-                      height: 41,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage('images/facebook.webp'),
-                          fit: BoxFit.fill,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 50),
-                  GestureDetector(
-                    onTap: () {
-
-                      AuthService(context).signInWithGoogle();
-                      // Navigator.of(context).pop();
-                    },
-                    child: Container(
-                      width: 40,
-                      height: 41,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage('images/google.png'),
-                          fit: BoxFit.fill,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-
-            //Hoặc đăng nhập với
-            SizedBox(
-              height: 20,
-            ),
-            Text(
-              'Hoặc đăng nhập với tài khoản',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.black.withOpacity(0.5),
-                fontSize: 12,
-                fontFamily: 'DM Sans',
-                fontWeight: FontWeight.w700,
-                height: 0,
-              ),
-            ),
+            // SizedBox(
+            //   height: 40,
+            // ),
+            // Container(
+            //   width: 345,
+            //   height: 41,
+            //   child: Row(
+            //     mainAxisSize: MainAxisSize.min,
+            //     mainAxisAlignment: MainAxisAlignment.center,
+            //     crossAxisAlignment: CrossAxisAlignment.center,
+            //     children: [
+            //       GestureDetector(
+            //         onTap: () => AuthService(context).signInWithFacebook(),
+            //         child: Container(
+            //           width: 40,
+            //           height: 41,
+            //           decoration: BoxDecoration(
+            //             image: DecorationImage(
+            //               image: AssetImage('images/facebook.webp'),
+            //               fit: BoxFit.fill,
+            //             ),
+            //           ),
+            //         ),
+            //       ),
+            //       const SizedBox(width: 50),
+            //       GestureDetector(
+            //         onTap: () {
+            //
+            //           AuthService(context).signInWithGoogle();
+            //           // Navigator.of(context).pop();
+            //         },
+            //         child: Container(
+            //           width: 40,
+            //           height: 41,
+            //           decoration: BoxDecoration(
+            //             image: DecorationImage(
+            //               image: AssetImage('images/google.png'),
+            //               fit: BoxFit.fill,
+            //             ),
+            //           ),
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // ),
+            //
+            //
+            // //Hoặc đăng nhập với
+            // SizedBox(
+            //   height: 20,
+            // ),
+            // Text(
+            //   'Hoặc đăng nhập với tài khoản',
+            //   textAlign: TextAlign.center,
+            //   style: TextStyle(
+            //     color: Colors.black.withOpacity(0.5),
+            //     fontSize: 12,
+            //     fontFamily: 'DM Sans',
+            //     fontWeight: FontWeight.w700,
+            //     height: 0,
+            //   ),
+            // ),
 
 
             //Email
@@ -293,14 +295,14 @@ class _dangNhapState extends State<dangNhap> {
             ),
 
             //Hiện lỗi đăng nhập
-            SizedBox(height: 7,),
+            SizedBox(height: 3,),
             Container(
               width: 298,
               child: Text(
                 error.join(", "),
                 style: TextStyle(
                   color: Colors.red,
-                  fontSize: 15,
+                  fontSize: 13,
                   fontWeight: FontWeight.w400
                 ),
               ),
@@ -309,7 +311,7 @@ class _dangNhapState extends State<dangNhap> {
 
             // Quên mật khẩu hoặc đăng ký
             SizedBox(
-              height: 10,
+              height: 0,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -353,29 +355,59 @@ class _dangNhapState extends State<dangNhap> {
             ),
 
 
+
+            // Container(
+            //   width: 298,
+            //   height: 50,
+            //   // color: Color(0xFF3B5998),
+            //   child: MaterialButton(
+            //     onPressed: () {
+            //
+            //     },
+            //     child: Row(
+            //       children: [
+            //         Container(
+            //           width: 30,
+            //           height: 30,
+            //           decoration: BoxDecoration(
+            //             image: DecorationImage(
+            //               image: AssetImage('images/google.png'),
+            //               fit: BoxFit.fill,
+            //             ),
+            //           ),
+            //         ),
+            //         Text("Đăng nhập bằng Google")
+            //       ],
+            //     ),
+            //   ),
+            // ),
+
+
             // nút đăng nhập
             SizedBox(
-              height: 40,
+              height: 10,
             ),
             GestureDetector(
               onTap: SignIn,
               child: Container(
                 width: 298,
-                height: 57,
+                height: 47,
                 padding: const EdgeInsets.all(10),
+                // color: Color(0xFF3ABA77),
                 decoration: ShapeDecoration(
                   color: Color(0xFF3ABA77),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(17),
+
                   ),
-                  shadows: [
-                    BoxShadow(
-                      color: Color(0xD1006A0A),
-                      blurRadius: 16,
-                      offset: Offset(0, 8),
-                      spreadRadius: 0,
-                    )
-                  ],
+                  // shadows: [
+                  //   BoxShadow(
+                  //     color: Color(0xD1006A0A),
+                  //     blurRadius: 16,
+                  //     offset: Offset(0, 8),
+                  //     spreadRadius: 0,
+                  //   )
+                  // ],
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -396,7 +428,102 @@ class _dangNhapState extends State<dangNhap> {
                   ],
                 ),
               ),
-            )
+            ),
+
+            SizedBox(height: 5,),
+            Text("Hoặc", style: TextStyle(fontFamily: 'DM Sans', fontWeight: FontWeight.w700)),
+
+            //hoặc đăng nhập với
+            SizedBox(height: 3,),
+            Container(
+              width: 298,
+
+              // decoration: ShapeDecoration(
+              //   // color: Color(0xFF3B5998),
+              //   shape: RoundedRectangleBorder(
+              //     borderRadius: BorderRadius.circular(10),
+              //   ),
+              //   shadows: [
+              //     BoxShadow(
+              //       color: Color(0xFF3B5998),
+              //       blurRadius: 16,
+              //       offset: Offset(0, 4),
+              //       spreadRadius: 0,
+              //     )
+              //   ],
+              // ),
+              child: ElevatedButton.icon(
+                label: Text('Đăng nhập với Facebook', style: TextStyle(color: Colors.white),),
+                icon: Container(
+                    width: 30,
+                    height: 30,
+                    margin: EdgeInsets.only(right: 0),
+                    child: ImageIcon(AssetImage('images/facebook.png'),color: Colors.white,
+                    )
+                ),
+
+                onPressed: () {
+                  AuthService(context).signInWithFacebook();
+                },
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Color(0xFF3B5998)),
+                  shape: MaterialStateProperty.all<OutlinedBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10), // Độ cong của góc
+                    ),
+                  ),
+
+                ),
+              ),
+            ),
+
+
+
+            SizedBox(height: 3,),
+            Container(
+              width: 298,
+              // decoration: ShapeDecoration(
+              //   // color: Color(0xFF3B5998),
+              //   shape: RoundedRectangleBorder(
+              //     borderRadius: BorderRadius.circular(10),
+              //   ),
+              //   shadows: [
+              //     BoxShadow(
+              //       color: Colors.grey,
+              //       blurRadius: 16,
+              //       offset: Offset(0, 4),
+              //       spreadRadius: 0,
+              //     )
+              //   ],
+              // ),
+              child: ElevatedButton.icon(
+
+                label: Text('Đăng nhập với Google', style: TextStyle(color: Colors.black),),
+                icon: Container(
+                  width: 30,
+                  height: 30,
+                  margin: EdgeInsets.only(right: 10),
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage('images/google.png'),
+                      fit: BoxFit.fill,
+                    ),
+                  ),
+                ),
+                onPressed: () {
+                  AuthService(context).signInWithGoogle();
+                },
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.grey[200]),
+                  shape: MaterialStateProperty.all<OutlinedBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10), // Độ cong của góc
+                    ),
+                  ),
+
+                ),
+              ),
+            ),
           ],
         ),
       ),

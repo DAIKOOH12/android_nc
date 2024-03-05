@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>446152477698-7gupudl4l4jnih5f9k3buii7sgc69d66.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.446152477698-7gupudl4l4jnih5f9k3buii7sgc69d66</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>446152477698-28fulo8r76g7svl8bla5ctpg2rbaj3ua.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBVvUqKHs83_PhisPg1712KtL_aeJXD5mk</string>
+	<key>GCM_SENDER_ID</key>
+	<string>446152477698</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>hou.edu.vn.germanForU.RunnerTests</string>
+	<key>PROJECT_ID</key>
+	<string>german-for-u</string>
+	<key>STORAGE_BUCKET</key>
+	<string>german-for-u.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:446152477698:ios:d7e4dc1e62b1fd85b56b1b</string>
+</dict>
+</plist>
