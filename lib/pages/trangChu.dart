@@ -54,7 +54,7 @@ class _trangChuState extends State<trangChu> {
       print("Đã có");
     }
     else {
-      print("kkkk");
+
       try {
         await FirebaseFirestore.instance.collection('tienDo').add(
             {
@@ -91,7 +91,7 @@ class _trangChuState extends State<trangChu> {
         child: Scaffold(
             appBar: AppBar(
 
-              title: Text('Hallo ' + name, style: TextStyle(color: Color(0xFF038400)),),
+              title: Text('Hallo ' + name, style: TextStyle(color: Color(0xFF038400), fontSize: 28, fontWeight: FontWeight.w500),),
               actions: <Widget>[
                 Padding(
                   padding: const EdgeInsets.all(10.0),
@@ -111,100 +111,116 @@ class _trangChuState extends State<trangChu> {
                 )
               ],
             ),
-            body: DefaultTabController(
-              length: 3,
-              child: Column(
-                children: [
-                  Material(
-                    child: Container(
-                      height: 60,
-                      
-                      child: TabBar(
+            body: Stack(
+              children: [
+                DefaultTabController(
+                  length: 3,
+                  child: Column(
+                    children: [
+                      Material(
+                        child: Container(
+                          height: 60,
 
-                        labelColor: Colors.white,
-                        // indicatorPadding: EdgeInsets.all(10),
-                        physics: ClampingScrollPhysics(),
-                        padding: EdgeInsets.all(10),
-                        unselectedLabelColor: Colors.black,
-                        indicatorSize: TabBarIndicatorSize.label,
-                        indicator: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                          color: Color(0xff026B00),
+                          child: TabBar(
 
-                        ),
-                        tabs: [
-                          Tab(
-                            child: Container(
-                              padding: EdgeInsets.only(left: 8, right: 8),
-                              decoration: BoxDecoration(
-                                border: Border.all(color: Color(0xff026B00), width: 1),
-                                borderRadius: BorderRadius.circular(30),
-                                // color: Colors.grey[100]
-                              ),
-                              height: 60,
-                              width: 150,
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: Text(
-                                  'Từ vựng',
-                                  style: TextStyle(
-                                    fontSize: 17
+                            labelColor: Colors.white,
+                            // indicatorPadding: EdgeInsets.all(10),
+                            physics: ClampingScrollPhysics(),
+                            padding: EdgeInsets.all(10),
+                            unselectedLabelColor: Colors.black,
+                            indicatorSize: TabBarIndicatorSize.label,
+                            indicator: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30),
+                              color: Color(0xff026B00),
+
+                            ),
+                            tabs: [
+                              Tab(
+                                child: Container(
+                                  padding: EdgeInsets.only(left: 8, right: 8),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(color: Color(0xff026B00), width: 1),
+                                    borderRadius: BorderRadius.circular(30),
+                                    // color: Colors.grey[100]
+                                  ),
+                                  height: 60,
+                                  width: 150,
+                                  child: Align(
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      'Từ vựng',
+                                      style: TextStyle(
+                                          fontSize: 17
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ),
 
-                          Tab(
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  border: Border.all(color: Color(0xff026B00), width: 1),
-                                  borderRadius: BorderRadius.circular(30)
+                              Tab(
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        border: Border.all(color: Color(0xff026B00), width: 1),
+                                        borderRadius: BorderRadius.circular(30)
+                                    ),
+                                    height: 60,
+                                    width: 150,
+                                    child: Align(
+                                      alignment: Alignment.center,
+                                      child: Text('Ngữ pháp',
+                                        style: TextStyle(
+                                            fontSize: 17
+                                        ),
+                                      ),
+                                    ),
+                                  )
                               ),
-                              height: 60,
-                              width: 150,
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: Text('Ngữ pháp',
-                                  style: TextStyle(
-                                    fontSize: 17
-                                  ),
-                              ),
-                            ),
-                          )
-                          ),
 
-                          Tab(
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  border: Border.all(color: Color(0xff026B00), width: 1),
-                                  borderRadius: BorderRadius.circular(30)
-                              ),
-                              height: 60,
-                              width: 150,
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: Text('Luyện thi',
-                                  style: TextStyle(
-                                    fontSize: 17
+                              Tab(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      border: Border.all(color: Color(0xff026B00), width: 1),
+                                      borderRadius: BorderRadius.circular(30)
                                   ),
+                                  height: 60,
+                                  width: 150,
+                                  child: Align(
+                                    alignment: Alignment.center,
+                                    child: Text('Luyện thi',
+                                      style: TextStyle(
+                                          fontSize: 17
+                                      ),
+                                    ),
+                                  ),
+                                ),
                               ),
-                            ),
+                            ],
                           ),
-                          ),
-                        ],
+                        ),
                       ),
-                    ),
+                      Expanded(
+                        child: TabBarView(children: [
+                          tuVung(),
+                          nguPhap(),
+                          luyenThi(),
+                        ]),
+                      ),
+
+                    ],
                   ),
-                  Expanded(
-                    child: TabBarView(children: [
-                      tuVung(),
-                      nguPhap(),
-                      luyenThi(),
-                    ]),
-                  )
-                ],
-              ),
+                ),
+
+                Positioned(
+                  bottom: 20,
+                  right: 20,
+                  child: FloatingActionButton(
+                    onPressed: () {
+                      // Xử lý sự kiện khi nhấn
+                    },
+                    child: Icon(Icons.add),
+                  ),
+                ),
+              ]
             )
         )
     );

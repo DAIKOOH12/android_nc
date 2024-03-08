@@ -13,13 +13,13 @@ class AuthService {
 
   signInWithGoogle() async {
     final GoogleSignInAccount? ggUser = await GoogleSignIn().signIn();
-
-    final GoogleSignInAuthentication ggAuth = await ggUser!.authentication;
-
     if (ggUser == null) {
       // Xử lý trường hợp không có người dùng đăng nhập
       return null;
     }
+
+    final GoogleSignInAuthentication ggAuth = await ggUser!.authentication;
+
 
 
     final credential = GoogleAuthProvider.credential(
@@ -69,6 +69,14 @@ class AuthService {
         permissions: ['email', 'public_profile']
       );
 
+      showDialog(
+          context: context,
+          builder: (context) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          });
+
       if(result.accessToken != null) {
         final OAuthCredential fbAuthCredential = FacebookAuthProvider
             .credential(result.accessToken!.token);
@@ -93,6 +101,7 @@ class AuthService {
             print(e);
           }
         }
+        Navigator.of(context).pop();
         return userCredential;
       }
 

@@ -9,6 +9,7 @@ import 'package:german_for_u/pages/dangKy.dart';
 
 import 'package:german_for_u/pages/dangNhap.dart';
 import 'package:german_for_u/auth/main_page.dart';
+import 'package:german_for_u/pages/theGhiNhoTV.dart';
 import 'package:german_for_u/pages/trangChu.dart';
 
 Future main() async {
@@ -85,6 +86,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: MainPage(),
+      // home: theGhiNhoTV(),
       debugShowCheckedModeBanner: false,
     );
   }
