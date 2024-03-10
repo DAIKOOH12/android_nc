@@ -20,6 +20,10 @@ class AuthService {
 
     final GoogleSignInAuthentication ggAuth = await ggUser!.authentication;
 
+    if(ggAuth == null) {
+      return null;
+    }
+
 
 
     final credential = GoogleAuthProvider.credential(

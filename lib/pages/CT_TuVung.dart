@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:german_for_u/obj/DT_tuVung.dart';
+import 'package:german_for_u/pages/theGhiNhoTV.dart';
 
 
 class CT_TuVung extends StatefulWidget {
@@ -22,12 +23,22 @@ class _CT_TuVungState extends State<CT_TuVung> {
   List<String> _listTuVung = [];
   List<String> _listNghia = [];
   List<DT_tuVung> lst = [];
+  List<String> listAnhThe = ["images/flashcard.png", 'images/study.png', "images/test.png"];
+  List<String> listTenThe = ["Thẻ ghi nhớ", "Học", "Kiểm tra"];
 
   DateTime startTime = DateTime.now();
   FlutterTts flutterTts = FlutterTts();
 
   int dem = 0;
   String id = "";
+
+  List<String> getListTu() {
+    return _listTuVung;
+  }
+
+  List<String> getListNghia() {
+    return _listNghia;
+  }
 
   Future getDem() async {
     var date = DateTime.now();
@@ -142,7 +153,63 @@ class _CT_TuVungState extends State<CT_TuVung> {
           ),
           body: SingleChildScrollView(
             child: Column(
+
               children: [
+                Container(
+                  width: 300,
+                  child: ListView.separated(
+                    itemCount: listAnhThe.length,
+                    shrinkWrap: true,
+
+                    separatorBuilder: (context, index) {
+                      return SizedBox(height: 10,);
+                    },
+
+                    physics: NeverScrollableScrollPhysics(),
+
+                    itemBuilder: (context, index) {
+                      return Container(
+
+                        height: 50,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(17),
+                            color: Colors.white
+                        ),
+                        child: MaterialButton(
+                          onPressed: () {
+                            if(index == 0) {
+                              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                    return theGhiNhoTV(listTu: getListTu(), listNghia: getListNghia());
+                                  }
+                                )
+                              );
+                            }
+                          },
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 30,
+                                height: 30,
+                                child: Image(
+                                  image: AssetImage(
+                                    listAnhThe[index],
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 17,),
+                              Text(
+                                listTenThe[index],
+                              )
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+
+                SizedBox(height: 30,),
+
                 ListView.builder(
                   itemCount: _listTuVung.length,
                   shrinkWrap: true,
