@@ -1,16 +1,19 @@
-import 'dart:async';
-import 'dart:math';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+import 'package:cached_network_image/cached_network_image.dart';
+
 import 'package:flip_card/flip_card.dart';
 import 'package:flip_card/flip_card_controller.dart';
-import 'package:flutter/material.dart';
+
 
 class theGhiNhoTV extends StatefulWidget {
   final List<String> listTu;
   final List<String> listNghia;
+  final List<String> listLinkAnh;
 
-  const theGhiNhoTV({super.key, required this.listTu, required this.listNghia});
+  const theGhiNhoTV({super.key, required this.listTu, required this.listNghia, required this.listLinkAnh});
 
   @override
   State<theGhiNhoTV> createState() => _theGhiNhoTVState();
@@ -26,12 +29,42 @@ class _theGhiNhoTVState extends State<theGhiNhoTV>
   late int ind;
   double _opacity = 1.0;
 
+  List<Widget> cachedImages = [];
+
+  void initListCache() {
+    for (String i in widget.listLinkAnh) {
+      cachedImages.add(CachedNetworkImage(
+        imageUrl: i,
+        placeholder: (context, url) => CircularProgressIndicator(),
+        errorWidget: (context, url, error) => Icon(Icons.error),
+      ));
+    }
+  }
+
+
+  Future<void> loadImage() async {
+    try {
+      for(String imageUrl in widget.listLinkAnh)
+      // load network image example
+      await precacheImage(NetworkImage(imageUrl), context);
+      // or
+      // Load assets image example
+      // await precacheImage(AssetImage(imagePath), context);
+      print('Image loaded and cached successfully!');
+    } catch (e) {
+      print('Failed to load and cache the image: $e');
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     _flipCardController = FlipCardController();
     ind = 0;
+    // initListCache();
+    loadImage();
   }
+
 
   Future getListTV() async {
     // final result = await FirebaseFirestore.instance.collection('tuVungTheoCD').
@@ -139,9 +172,19 @@ class _theGhiNhoTVState extends State<theGhiNhoTV>
                                 ),
                                 borderRadius: BorderRadius.circular(10)),
                             child: Center(
-                              child: Text(
-                                widget.listNghia[ind],
-                                style: TextStyle(color: Colors.black),
+                              child: Column(
+                                children: [
+                                  Container(
+                                    width: 200,
+                                    // child: Image.asset('images/facebook.png'),
+                                    // child: cachedImages[ind],
+                                    child: Image.network(widget.listLinkAnh[ind]),
+                                  ),
+                                  Text(
+                                    widget.listNghia[ind],
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                ],
                               ),
                             )
                         ),

@@ -1,9 +1,22 @@
+
+
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_cache_manager/file.dart';
+
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:german_for_u/obj/DT_tuVung.dart';
+import 'package:german_for_u/pages/hocTuVung.dart';
 import 'package:german_for_u/pages/theGhiNhoTV.dart';
+import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
+
+import 'dart:async';
+
 
 
 class CT_TuVung extends StatefulWidget {
@@ -22,6 +35,7 @@ class CT_TuVung extends StatefulWidget {
 class _CT_TuVungState extends State<CT_TuVung> {
   List<String> _listTuVung = [];
   List<String> _listNghia = [];
+  List<String> _listLinkAnh = [];
   List<DT_tuVung> lst = [];
   List<String> listAnhThe = ["images/flashcard.png", 'images/study.png', "images/test.png"];
   List<String> listTenThe = ["Thẻ ghi nhớ", "Học", "Kiểm tra"];
@@ -60,11 +74,36 @@ class _CT_TuVungState extends State<CT_TuVung> {
 
   }
 
+
+  Future<void> downloadAndSaveImages(List<String> imageUrls) async {
+
+    // for (var imageUrl in imageUrls) {
+
+      var url = 'https://firebasestorage.googleapis.com/v0/b/german-for-u.appspot.com/o/image%2Fcountries%2FCanada.png?alt=media&token=780c410d-1af4-44c8-b4f5-9ecb0f254f49'; // Thay 'URL_ẢNH_CỦA_BẠN' bằng URL thực tế của ảnh bạn muốn tải
+      var response = await http.get(Uri.parse(url));
+
+      var documentDirectory = await getApplicationDocumentsDirectory();
+      var firstPath = documentDirectory.path + "/images";
+      print(firstPath);
+      // String filePathAndName = documentDirectory.path + '/images/ten_anh.jpg'; // Thay 'ten_anh.jpg' bằng tên file bạn muốn lưu
+      //
+      // await Directory(firstPath).create(recursive: true); // Tạo thư mục nếu nó chưa tồn tại
+      // if(filePathAndName.isNotEmpty){
+      //   // final file = File('file.txt');
+      //   final file = new File();
+      //   file.writeAsBytesSync(response.bodyBytes);// <-- 3
+      // }
+
+
+    // }
+  }
+
   @override
   void initState() {
     super.initState();
     getTuVung();
     getDem();
+    downloadAndSaveImages(_listLinkAnh);
     // startTime = DateTime.now();
   }
 
@@ -107,20 +146,23 @@ class _CT_TuVungState extends State<CT_TuVung> {
       snapShot.docs.forEach((value) {
 
         _listTuVung.add(value['sTu']);
+        _listLinkAnh.add(value['sLinkAnh']);
         if(value.data().containsKey('sNghia')) {
           _listNghia.add(value['sNghia']);
-          lst.add(DT_tuVung(value['sTu'], value['sNghia'], widget.maChuDe.toString(), widget.tenChuDe.toString()));
+          lst.add(DT_tuVung(value['sTu'], value['sNghia'], widget.maChuDe.toString(), widget.tenChuDe.toString(), value['sLinkAnh']));
         }
-        else
-          {
-            lst.add(DT_tuVung(value['sTu'], "", widget.maChuDe.toString(), widget.tenChuDe.toString()));
-          }
+        // else
+        //   {
+        //     lst.add(DT_tuVung(value['sTu'], "", widget.maChuDe.toString(), widget.tenChuDe.toString()));
+        //   }
 
       });
     }
     setState(() {
       lst.sort((a ,b ) => a.tu.compareTo(b.tu));
     });
+
+    // downloadAndSaveImages(_listLinkAnh);
   }
 
   Future<void> speak(String text) async {
@@ -179,7 +221,15 @@ class _CT_TuVungState extends State<CT_TuVung> {
                           onPressed: () {
                             if(index == 0) {
                               Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                    return theGhiNhoTV(listTu: getListTu(), listNghia: getListNghia());
+                                    return theGhiNhoTV(listTu: getListTu(), listNghia: getListNghia(), listLinkAnh: _listLinkAnh,);
+                                  }
+                                )
+                              );
+                            }
+                            else if(index == 1) {
+                              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                    // return hocTuVung(listTu: getListTu(), listNghia: getListNghia(), listLinkAnh: _listLinkAnh,);
+                                    return hocTuVung(listTuVung: lst,listTu: getListTu(),);
                                   }
                                 )
                               );
