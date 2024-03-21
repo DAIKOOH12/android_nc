@@ -31,30 +31,22 @@ class _theGhiNhoTVState extends State<theGhiNhoTV>
 
   List<Widget> cachedImages = [];
 
-  void initListCache() {
-    for (String i in widget.listLinkAnh) {
-      cachedImages.add(CachedNetworkImage(
-        imageUrl: i,
-        placeholder: (context, url) => CircularProgressIndicator(),
-        errorWidget: (context, url, error) => Icon(Icons.error),
-      ));
-    }
-  }
 
 
-  Future<void> loadImage() async {
-    try {
-      for(String imageUrl in widget.listLinkAnh)
-      // load network image example
-      await precacheImage(NetworkImage(imageUrl), context);
-      // or
-      // Load assets image example
-      // await precacheImage(AssetImage(imagePath), context);
-      print('Image loaded and cached successfully!');
-    } catch (e) {
-      print('Failed to load and cache the image: $e');
-    }
-  }
+
+  // Future<void> loadImage() async {
+  //   try {
+  //     for(String imageUrl in widget.listLinkAnh)
+  //     // load network image example
+  //     await precacheImage(NetworkImage(imageUrl), context);
+  //     // or
+  //     // Load assets image example
+  //     // await precacheImage(AssetImage(imagePath), context);
+  //     print('Image loaded and cached successfully!');
+  //   } catch (e) {
+  //     print('Failed to load and cache the image: $e');
+  //   }
+  // }
 
   @override
   void initState() {
@@ -62,7 +54,7 @@ class _theGhiNhoTVState extends State<theGhiNhoTV>
     _flipCardController = FlipCardController();
     ind = 0;
     // initListCache();
-    loadImage();
+    // loadImage();
   }
 
 

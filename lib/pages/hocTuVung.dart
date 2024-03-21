@@ -51,55 +51,14 @@ class _hocTuVungState extends State<hocTuVung> {
   }
 
 
-  // void _showTemporaryDialog(BuildContext context, String text, bool trangThai) {
-  //   showDialog(
-  //     context: context,
-  //     barrierDismissible: false,
-  //     builder: (BuildContext context) {
-  //       return showDialog(
-  //         // title: Text('Thông báo'),
-  //         content: Container(
-  //           width: 250,
-  //           height: 100,
-  //           decoration: BoxDecoration(
-  //             borderRadius: BorderRadius.circular(7)
-  //           ),
-  //           // child: Column(
-  //           //   children: [
-  //           //     Container(
-  //           //       width: 250,
-  //           //       decoration: BoxDecoration(
-  //           //         color: Colors.red
-  //           //       ),
-            //       child: Row(
-            //         children: [
-            //           Container(
-            //             width: 30,
-            //               height: 30,
-            //               child: Image.asset("images/sad_face.png")
-            //           ),
-            //           Text(
-            //             'Học từ này!',
-            //             style: TextStyle(
-            //               color: Colors.white
-            //             ),
-            //           ),
-            //         ],
-            //       ),
-  //           //     )
-  //           //   ],
-  //           // ),
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
-
   void _showIncorrectAnswerDialog(BuildContext context, int index) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8)
+          ),
           contentPadding: EdgeInsets.zero,
           titlePadding: EdgeInsets.zero,
           title: Container(
@@ -126,36 +85,133 @@ class _hocTuVungState extends State<hocTuVung> {
               ],
             ),
           ),
-          content: Column(
-            children: [
-              Text(
-                widget.listTuVung[ind].nghia,
-              ),
-              Text(
-                'Đáp án đúng:',
-                style: TextStyle(
+          content: Container(
+            padding: EdgeInsets.all(12),
+            height: 150,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  widget.listTuVung[ind-1].nghia,
+                ),
+                SizedBox(height: 7,),
+                Text(
+                  'Đáp án đúng:',
+                  style: TextStyle(
+                    color: Colors.green,
+                  ),
+                ),
+
+                Text(
+                  widget.listTuVung[ind-1].tu,
+                  style: TextStyle(
+                    // color: Colors.green,
+                  ),
+                ),
+                SizedBox(height: 7,),
+                Text(
+                  'Đáp án của bạn:',
+                  style: TextStyle(
+                    color: Colors.green,
+                  ),
+                ),
+                Text(
+                  listRandomAnswer[index],
+                  style: TextStyle(
+                    // color: Colors.green,
+                  ),
+                )
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            Center(
+              child: Container(
+                width: 230,
+                decoration: BoxDecoration(
+                  // color: Colors.green
+                ),
+
+                child: MaterialButton(
+
+                  onPressed: () {
+                    Navigator.of(context).pop(); // Đóng cửa sổ dialog
+                  },
                   color: Colors.green,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text('Tiếp tục', style: TextStyle(color: Colors.white),),
                 ),
               ),
-              Text(
-                widget.listTuVung[ind].tu,
-                style: TextStyle(
-                  // color: Colors.green,
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showCorrectAnswerDialog(BuildContext context, int index) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8)
+          ),
+          contentPadding: EdgeInsets.zero,
+          titlePadding: EdgeInsets.zero,
+          title: Container(
+            height: 50,
+            decoration: BoxDecoration(
+              color: Colors.green,
+              borderRadius: BorderRadius.only(topRight: Radius.circular(8), topLeft: Radius.circular(8)),
+            ),
+            child: Row(
+              children: [
+                SizedBox(width: 10,),
+                Container(
+                  width: 30,
+                  height: 30,
+                  child: Image.asset("images/happy_face.png"),
                 ),
-              ),
-              Text(
-                'Đáp án của bạn:',
-                style: TextStyle(
-                  color: Colors.green,
+                SizedBox(width: 15,),
+                Text(
+                  'Chính xác',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
                 ),
-              ),
-              Text(
-                listRandomAnswer[index],
-                style: TextStyle(
-                  // color: Colors.green,
+              ],
+            ),
+          ),
+          content: Container(
+            padding: EdgeInsets.all(12),
+            height: 100,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  widget.listTuVung[ind-1].nghia,
                 ),
-              )
-            ],
+                SizedBox(height: 7,),
+                Text(
+                  'Đáp án đúng:',
+                  style: TextStyle(
+                    color: Colors.green,
+                  ),
+                ),
+
+                Text(
+                  widget.listTuVung[ind-1].tu,
+                  style: TextStyle(
+                    // color: Colors.green,
+                  ),
+                ),
+                SizedBox(height: 7,),
+
+              ],
+            ),
           ),
           actions: <Widget>[
             TextButton(
@@ -192,6 +248,9 @@ class _hocTuVungState extends State<hocTuVung> {
                     onTap: () {
                       if(index != indexAnswer) {
                         _showIncorrectAnswerDialog(context,index);
+                      }
+                      else {
+                        _showCorrectAnswerDialog(context, index);
                       }
                       setState(() {
                         ind ++;
