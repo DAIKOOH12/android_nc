@@ -16,12 +16,14 @@ class _TestForm extends State<TestForm> {
   String? getMaDe;
   List<TestFormModels> lstTest = [];
   var index = 0;
+
   // var cauTheoMaDe;
   void initState() {
     _loadData();
 
     super.initState();
   }
+
   Future _loadData() async {
     getMaDe = widget.made;
     final cauTheoMaDe = await FirebaseFirestore.instance
@@ -40,14 +42,10 @@ class _TestForm extends State<TestForm> {
             awnser: element['awnser']));
       });
     }
-    setState(() {
-
-    });
+    setState(() {});
   }
 
   @override
-
-
   String warningText = '';
   int selectedOption = 0;
 
@@ -64,9 +62,11 @@ class _TestForm extends State<TestForm> {
           child: Center(
             child: Column(
               children: <Widget>[
-                Text(lstTest[index].question),
+                Text(
+                    lstTest.length == 0 ? 'Đang tải' : lstTest[index].question),
                 ListTile(
-                  title: Text(lstTest[index].A),
+                  title:
+                      Text(lstTest.length == 0 ? 'Đang tải' : lstTest[index].A),
                   leading: Radio<int>(
                     value: 1,
                     groupValue: selectedOption,
@@ -79,7 +79,8 @@ class _TestForm extends State<TestForm> {
                   ),
                 ),
                 ListTile(
-                  title: Text(lstTest[index].B),
+                  title:
+                      Text(lstTest.length == 0 ? 'Đang tải' : lstTest[index].B),
                   leading: Radio<int>(
                     value: 2,
                     groupValue: selectedOption,
@@ -92,7 +93,8 @@ class _TestForm extends State<TestForm> {
                   ),
                 ),
                 ListTile(
-                  title: Text(lstTest[index].C),
+                  title:
+                      Text(lstTest.length == 0 ? 'Đang tải' : lstTest[index].C),
                   leading: Radio<int>(
                     value: 3,
                     groupValue: selectedOption,
@@ -105,7 +107,8 @@ class _TestForm extends State<TestForm> {
                   ),
                 ),
                 ListTile(
-                  title: Text(lstTest[index].D),
+                  title:
+                      Text(lstTest.length == 0 ? 'Đang tải' : lstTest[index].D),
                   leading: Radio<int>(
                     value: 4,
                     groupValue: selectedOption,
@@ -126,34 +129,47 @@ class _TestForm extends State<TestForm> {
                 ),
                 ElevatedButton(
                     onPressed: () {
-                      print('số câu $index');
-                      setState(() {
-                        print(selectedOption);
-                        print(lstTest[index].awnser);
-
-                        if (selectedOption ==
-                            int.parse(lstTest[index].awnser)) {
-                          setState(() {
-                            warningText = 'Bạn đã trả lời đúng! Chúc mừng!';
-                          });
-                        } else {
-                          setState(() {
-                            warningText = 'Bạn đã trả lời sai! :<';
-                          });
-                        }
-                        Future.delayed(Duration(milliseconds: 900 ), () {
-                          setState(() {
-                            if(index==lstTest.length-1){
-
-                            }
-                            else{
-                              index++;
-                            }
-                            selectedOption = 0;
-                            warningText='';
-                          });
+                      if (selectedOption == 0) {
+                        setState(() {
+                          warningText = 'Hãy chọn 1 câu trả lời nhé!';
                         });
-                      });
+                      } else {
+                        setState(() {
+                          print('Bạn chọn $selectedOption');
+                          print(lstTest[index].awnser);
+
+                          if (selectedOption ==
+                              int.parse(lstTest[index].awnser)) {
+                            setState(() {
+                              warningText = 'Bạn đã trả lời đúng! Chúc mừng!';
+                            });
+                            Future.delayed(Duration(milliseconds: 900), () {
+                              setState(() {
+                                if (index == lstTest.length - 1) {
+                                } else {
+                                  index++;
+                                }
+                                selectedOption = 0;
+                                warningText = '';
+                              });
+                            });
+                          } else {
+                            setState(() {
+                              warningText = 'Bạn đã trả lời sai! :<';
+                            });
+                            Future.delayed(Duration(milliseconds: 900), () {
+                              setState(() {
+                                if (index == lstTest.length - 1) {
+                                } else {
+                                  index++;
+                                }
+                                selectedOption = 0;
+                                warningText = '';
+                              });
+                            });
+                          }
+                        });
+                      }
                     },
                     child: Text('Kiểm tra'))
               ],
