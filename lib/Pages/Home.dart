@@ -1,4 +1,5 @@
 import 'package:english_learning/Pages/CT_TuVung.dart';
+import 'package:english_learning/Pages/LuyenThiSkills.dart';
 import 'package:english_learning/Pages/NguPhap.dart';
 import 'package:english_learning/Pages/SettingPage.dart';
 import 'package:english_learning/Pages/TodayLesson.dart';
@@ -126,7 +127,11 @@ class Home extends StatelessWidget {
                 Container(
                   width: MediaQuery.of(context).size.width * 0.8,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(context,
+                        CupertinoPageRoute(builder: (context)=>LuyenThiSkills())
+                      );
+                    },
                     child: Text(
                       "Luyện thi TOEIC",
                       style: TextStyle(fontSize: 15, color: Colors.white),
