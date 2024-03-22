@@ -19,7 +19,8 @@
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
   <meta name="description" content="A new Flutter project.">
-  <meta name="google-signin-client_id" content="446152477698-gh8f6f6q75n1atumm4a2kn69hbnpmbm1.apps.googleusercontent.com">
+<!--  <meta name="google-signin-client_id" content="446152477698-gh8f6f6q75n1atumm4a2kn69hbnpmbm1.apps.googleusercontent.com">-->
+  <meta name="google-signin-client_id" content="446152477698-8vomkhck82lvim55htgm3t0k6o1276qo.apps.googleusercontent.com">
   <!-- iOS meta tags & icons -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -57,29 +58,25 @@
   </script>
 
 
-<!--<script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js"></script>-->
-<!--<script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js"></script>-->
-<!--<script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>-->
+    <script type="module">
+      // Import the functions you need from the SDKs you need
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+      // TODO: Add SDKs for Firebase products that you want to use
+      // https://firebase.google.com/docs/web/setup#available-libraries
 
-<!--<script type="module">-->
-<!--  // Import the functions you need from the SDKs you need-->
-<!--  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";-->
-<!--  // TODO: Add SDKs for Firebase products that you want to use-->
-<!--  // https://firebase.google.com/docs/web/setup#available-libraries-->
+      // Your web app's Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyB3Du6aN2iMY-bG77bijJAac4QlyLS7BXA",
+        authDomain: "german-for-u.firebaseapp.com",
+        projectId: "german-for-u",
+        storageBucket: "german-for-u.appspot.com",
+        messagingSenderId: "446152477698",
+        appId: "1:446152477698:web:fdb105ef5cca0b09b56b1b"
+      };
 
-<!--  // Your web app's Firebase configuration-->
-<!--  const firebaseConfig = {-->
-<!--    apiKey: "AIzaSyB3Du6aN2iMY-bG77bijJAac4QlyLS7BXA",-->
-<!--    authDomain: "german-for-u.firebaseapp.com",-->
-<!--    projectId: "german-for-u",-->
-<!--    storageBucket: "german-for-u.appspot.com",-->
-<!--    messagingSenderId: "446152477698",-->
-<!--    appId: "1:446152477698:web:97c6d6cdba10969ab56b1b"-->
-<!--  };-->
-
-<!--  // Initialize Firebase-->
-<!--  const app = initializeApp(firebaseConfig);-->
-<!--</script>-->
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+    </script>
 
 </body>
 </html>

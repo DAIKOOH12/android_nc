@@ -65,6 +65,7 @@ class _CT_TuVungState extends State<CT_TuVung> {
         .where('dNgay', isEqualTo: dNgay)
         .get();
 
+
     if(getDem.docs.isNotEmpty) {
       getDem.docs.forEach((element) {
         setState(() {
@@ -76,29 +77,6 @@ class _CT_TuVungState extends State<CT_TuVung> {
 
   }
 
-
-  Future<void> downloadAndSaveImages(List<String> imageUrls) async {
-
-    // for (var imageUrl in imageUrls) {
-
-      var url = 'https://firebasestorage.googleapis.com/v0/b/german-for-u.appspot.com/o/image%2Fcountries%2FCanada.png?alt=media&token=780c410d-1af4-44c8-b4f5-9ecb0f254f49'; // Thay 'URL_ẢNH_CỦA_BẠN' bằng URL thực tế của ảnh bạn muốn tải
-      var response = await http.get(Uri.parse(url));
-
-      var documentDirectory = await getApplicationDocumentsDirectory();
-      var firstPath = documentDirectory.path + "/images";
-      print(firstPath);
-      // String filePathAndName = documentDirectory.path + '/images/ten_anh.jpg'; // Thay 'ten_anh.jpg' bằng tên file bạn muốn lưu
-      //
-      // await Directory(firstPath).create(recursive: true); // Tạo thư mục nếu nó chưa tồn tại
-      // if(filePathAndName.isNotEmpty){
-      //   // final file = File('file.txt');
-      //   final file = new File();
-      //   file.writeAsBytesSync(response.bodyBytes);// <-- 3
-      // }
-
-
-    // }
-  }
 
   void initListCache() {
     for (String i in _listLinkAnh) {
@@ -116,7 +94,7 @@ class _CT_TuVungState extends State<CT_TuVung> {
     speak("");
     getTuVung();
     getDem();
-    initListCache();
+    // initListCache();
     // downloadAndSaveImages(_listLinkAnh);
 
     // startTime = DateTime.now();
@@ -130,7 +108,7 @@ class _CT_TuVungState extends State<CT_TuVung> {
     Duration timeOpen = endTime!.difference(startTime);
     print('Page opened for: ${timeOpen.inSeconds} seconds');
     upDateTuVung(timeOpen.inSeconds);
-
+    print(lst);
     // super.dispose();
   }
 
@@ -182,6 +160,7 @@ class _CT_TuVungState extends State<CT_TuVung> {
   }
 
   Future<void> speak(String text) async {
+
     await flutterTts.setLanguage('de-DE');
 
     await flutterTts.setPitch(0.8);

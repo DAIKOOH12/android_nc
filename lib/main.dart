@@ -45,14 +45,16 @@ Future main() async {
     try {
       await Firebase.initializeApp(
           options: const FirebaseOptions(
-
+              // apiKey: api_key,
+              // appId: app_id,
+              // messagingSenderId: messagingSenderId,
+              // projectId: "german-for-u"
               apiKey: "AIzaSyB3Du6aN2iMY-bG77bijJAac4QlyLS7BXA",
               authDomain: "german-for-u.firebaseapp.com",
               projectId: "german-for-u",
               storageBucket: "german-for-u.appspot.com",
               messagingSenderId: "446152477698",
-              appId: "1:446152477698:web:97c6d6cdba10969ab56b1b"
-
+              appId: "1:446152477698:web:fdb105ef5cca0b09b56b1b"
           )
       );
     } catch (e) {
