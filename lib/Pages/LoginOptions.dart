@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:english_learning/global/sessions/SessionsManager.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -230,6 +233,14 @@ class _Wrapper extends State<Wrapper> {
             accessToken: googleSignInAuthentication.accessToken);
         UserCredential userCredential =
         await FirebaseAuth.instance.signInWithCredential(credential);
+
+
+        final user=userCredential.user;
+        for(final providerProfile in user!.providerData){
+          final  email =providerProfile.email;
+          SessionManager sm=SessionManager();
+          sm.setAuthToken(email.toString());
+        }
         if (userCredential != null) {
           setState(() {
             _singedIn = true;

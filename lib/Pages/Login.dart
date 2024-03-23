@@ -1,5 +1,6 @@
 import 'package:english_learning/Pages/MainPage.dart';
 import 'package:english_learning/Pages/SignUp.dart';
+import 'package:english_learning/global/sessions/SessionsManager.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -220,6 +221,8 @@ class LoginState extends State<Login> {
     });
     if (user != null) {
       print("Login Success");
+      SessionManager sm=SessionManager();
+      sm.setAuthToken(email);
       Navigator.pushAndRemoveUntil(
           context, MaterialPageRoute(builder: (context) => MainPage()),ModalRoute.withName('/'));
     }

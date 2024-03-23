@@ -79,6 +79,11 @@ class _CT_Reading extends State<CT_Reading> {
                                               "Bắt đầu thi thử",
                                               style:
                                                   TextStyle(color: Colors.white),
+                                            ),
+                                            Text(
+                                              "Đã làm 0 lần",
+                                              style:
+                                              TextStyle(color: Colors.white),
                                             )
                                           ],
                                         ),
