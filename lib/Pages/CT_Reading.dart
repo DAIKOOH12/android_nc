@@ -121,7 +121,7 @@ class _CT_Reading extends State<CT_Reading> {
 
   Stream<List<ReadingModels>> _readData() {
     final readingCollection =
-        FirebaseFirestore.instance.collection('LuyenThiDoc');
+        FirebaseFirestore.instance.collection('LuyenThiDoc').orderBy('name');
 
     return readingCollection
         .snapshots()

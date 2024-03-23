@@ -105,7 +105,7 @@ class _CT_TungVung extends State<CT_TungVung> {
   }
 
   Stream<List<TuNguModels>> _readData() {
-    final tunguCollection = FirebaseFirestore.instance.collection('TuVung');
+    final tunguCollection = FirebaseFirestore.instance.collection('TuVung').orderBy('engword');
 
     return tunguCollection.snapshots().map((querySnapShot) => querySnapShot.docs
         .map(
