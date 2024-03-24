@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:english_learning/Models/ReadingModels.dart';
+import 'package:english_learning/Models/Users_ThiDocModels.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'TestForm.dart';
 
@@ -12,6 +14,7 @@ class CT_Reading extends StatefulWidget {
 }
 
 class _CT_Reading extends State<CT_Reading> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,16 +46,20 @@ class _CT_Reading extends State<CT_Reading> {
                                 height: 10,
                               ),
                               GestureDetector(
-                                onTap: (){
-                                  Navigator.push(context,
-                                      CupertinoPageRoute(builder: (context)=>TestForm(made: e.made.toString(),))
-                                  );
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      CupertinoPageRoute(
+                                          builder: (context) => TestForm(
+                                                made: e.made.toString(),
+                                              )));
                                 },
                                 child: Center(
                                   child: Container(
                                     decoration: BoxDecoration(
                                         color: Colors.blue,
-                                        borderRadius: BorderRadius.circular(15)),
+                                        borderRadius:
+                                            BorderRadius.circular(15)),
                                     padding: EdgeInsets.all(15.0),
                                     height: 100.0,
                                     width:
@@ -77,14 +84,10 @@ class _CT_Reading extends State<CT_Reading> {
                                             ),
                                             Text(
                                               "Bắt đầu thi thử",
-                                              style:
-                                                  TextStyle(color: Colors.white),
+                                              style: TextStyle(
+                                                  color: Colors.white),
                                             ),
-                                            Text(
-                                              "Đã làm 0 lần",
-                                              style:
-                                              TextStyle(color: Colors.white),
-                                            )
+
                                           ],
                                         ),
                                         SizedBox(
@@ -97,14 +100,14 @@ class _CT_Reading extends State<CT_Reading> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              e.socau.toString()+" câu",
-                                              style:
-                                                  TextStyle(color: Colors.white),
+                                              e.socau.toString() + " câu",
+                                              style: TextStyle(
+                                                  color: Colors.white),
                                             ),
                                             Text(
-                                              e.time.toString()+" phút",
-                                              style:
-                                                  TextStyle(color: Colors.white),
+                                              e.time.toString() + " phút",
+                                              style: TextStyle(
+                                                  color: Colors.white),
                                             )
                                           ],
                                         )
