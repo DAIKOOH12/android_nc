@@ -6,16 +6,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class TestForm extends StatefulWidget {
+class ReadingTestForm extends StatefulWidget {
   String? made;
 
-  TestForm({required this.made});
+  ReadingTestForm({required this.made});
 
   @override
-  State<StatefulWidget> createState() => _TestForm();
+  State<StatefulWidget> createState() => _ReadingTestForm();
 }
 
-class _TestForm extends State<TestForm> {
+class _ReadingTestForm extends State<ReadingTestForm> {
   bool isLoading = false;
   int tongdiem = 0;
   String? getMaDe;

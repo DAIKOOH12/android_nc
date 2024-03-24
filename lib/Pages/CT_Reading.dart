@@ -66,6 +66,8 @@ class _CT_Reading extends State<CT_Reading> {
         isLoading = true;
       });
     }
+    print('Đề có điểm '+lstDeUser.length.toString());
+
     // lastPoint=lstDeUser[0].diem.toString();
   }
 
@@ -105,6 +107,7 @@ class _CT_Reading extends State<CT_Reading> {
                                     lstDeUser.length - 1) {
                                   getUserReadingCount = lstDeUser.length - 1;
                                 }
+                                print('Đề có điểm '+lstDeUser.length.toString());
                                 print('Chỉ số gốc $index');
                                 if (index == getUserReadingCount - 1) {
                                   index = getUserReadingCount - 1;
@@ -122,7 +125,7 @@ class _CT_Reading extends State<CT_Reading> {
                                         Navigator.push(
                                             context,
                                             CupertinoPageRoute(
-                                                builder: (context) => TestForm(
+                                                builder: (context) => ReadingTestForm(
                                                       made: e.made.toString(),
                                                     )));
                                       },
