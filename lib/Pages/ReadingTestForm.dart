@@ -110,7 +110,7 @@ class _ReadingTestForm extends State<ReadingTestForm> {
   @override
   String warningText = '';
   int selectedOption = 0;
-
+  @override
   @override
   Widget build(BuildContext context) {
     return isLoading
@@ -230,12 +230,11 @@ class _ReadingTestForm extends State<ReadingTestForm> {
                                         });
                                         Future.delayed(Duration(seconds: 1),
                                             () {
-                                          Navigator.pushAndRemoveUntil(
+                                          Navigator.pop(
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      CT_Reading()),
-                                              (route) => false);
+                                                      CT_Reading()));
                                         });
                                       } else {
                                         index++;
@@ -262,12 +261,11 @@ class _ReadingTestForm extends State<ReadingTestForm> {
                                         });
                                         Future.delayed(Duration(seconds: 1),
                                             () {
-                                          Navigator.pushAndRemoveUntil(
+                                          Navigator.pop(
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      CT_Reading()),
-                                              (route) => false);
+                                                      CT_Reading()));
                                         });
                                       } else {
                                         index++;

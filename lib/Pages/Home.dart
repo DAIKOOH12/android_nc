@@ -1,4 +1,5 @@
 import 'package:english_learning/Pages/CT_TuVung.dart';
+import 'package:english_learning/Pages/FavoriteWord.dart';
 import 'package:english_learning/Pages/LuyenThiSkills.dart';
 import 'package:english_learning/Pages/NguPhap.dart';
 import 'package:english_learning/Pages/SettingPage.dart';
@@ -108,7 +109,14 @@ class Home extends StatelessWidget {
                 Container(
                   width: MediaQuery.of(context).size.width * 0.8,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+
+                      Future.delayed(Duration(milliseconds: 600),(){
+                        Navigator.push(context,
+                            CupertinoPageRoute(builder: (context)=>FavoritesWord())
+                        );
+                      });
+                    },
                     child: Text(
                       "Từ/Câu yêu thích",
                       style: TextStyle(fontSize: 15, color: Colors.white),

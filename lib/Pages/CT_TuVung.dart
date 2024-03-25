@@ -3,6 +3,8 @@ import 'package:english_learning/Models/TuNguModels.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CT_TungVung extends StatefulWidget {
   @override
@@ -11,7 +13,38 @@ class CT_TungVung extends StatefulWidget {
 
 class _CT_TungVung extends State<CT_TungVung> {
   final FlutterTts flutterTts = FlutterTts();
+  List<String> lstFavorites=[];
+  String? user;
+  Future<void> loadFavorites() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    setState(() {
+      user = pref.getString('auth_token');
+      lstFavorites=pref.getStringList(user!+'_Favorites')??[];
+    });
+  }
+  Future<void> setFavorites(List<String> favorites) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    user = pref.getString('auth_token');
+    pref.setStringList(user!+'_Favorites',favorites);
+  }
 
+  void checkExist(String favorites){
+    if(lstFavorites.contains(favorites)){
+      Fluttertoast.showToast(
+          msg: 'Đã tồn tại từ này trong Favorites',
+        fontSize: 20
+      );
+    }else{
+      lstFavorites.add(favorites);
+      setFavorites(lstFavorites);
+      _showToast(context);
+    }
+  }
+  @override
+  void initState() {
+    loadFavorites();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,7 +98,8 @@ class _CT_TungVung extends State<CT_TungVung> {
                                       padding: const EdgeInsets.fromLTRB(0,3,0,5),
                                       child: GestureDetector(
                                         onTap: () {
-
+                                          checkExist(e.engword.toString());
+                                          print(lstFavorites);
                                         },
                                         child: Icon(
                                           Icons.star,
@@ -112,5 +146,20 @@ class _CT_TungVung extends State<CT_TungVung> {
           (e) => TuNguModels.fromSnapShot(e),
         )
         .toList());
+  }
+  void _showToast(BuildContext context) {
+    final scaffold = ScaffoldMessenger.of(context);
+    scaffold.showSnackBar(
+      SnackBar(
+        content: const Text('Added to favorite'),
+        action: SnackBarAction(label: 'UNDO', onPressed: (){
+          scaffold.hideCurrentSnackBar;
+
+        }),
+      ),
+    );
+    // Future.delayed(Duration(milliseconds: 100),(){
+    //   scaffold.hideCurrentSnackBar;
+    // });
   }
 }

@@ -1,6 +1,7 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:english_learning/Models/TestFormModels.dart';
+import 'package:english_learning/Models/Users_ThiNgheModels.dart';
 import 'package:english_learning/Pages/CT_Listening.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -64,8 +65,7 @@ class _ListeningTestform extends State<ListeningTestform> {
     getMaDe = widget.made;
     final cauTheoMaDe = await FirebaseFirestore.instance
         .collection('CT_ThiNghe')
-        .where('made', isEqualTo: getMaDe!)
-        .get();
+        .where('made', isEqualTo: getMaDe!).get();
     if (cauTheoMaDe.docs.isNotEmpty) {
       cauTheoMaDe.docs.forEach((element) {
         lstTest.add(new TestFormModels(
@@ -81,14 +81,6 @@ class _ListeningTestform extends State<ListeningTestform> {
     setState(() {});
   }
 
-  @override
-  void dispose() {
-    setState(() {
-      isPlaying=false;
-    });
-    super.dispose();
-  }
-
   String formatTime(Duration duration) {
     String twoDigits(int n) => n.toString().padLeft(2, '0');
     final hours = twoDigits(duration.inHours);
@@ -97,10 +89,62 @@ class _ListeningTestform extends State<ListeningTestform> {
 
     return [if (duration.inHours > 0) hours, minutes, seconds].join(':');
   }
+  Future _updateDiem(
+      String? user, String made, String diem, String solanlam) async {
+    final idTest = user.toString() + '_' + made;
+    final userTest = await FirebaseFirestore.instance
+        .collection('Users_ThiNghe')
+        .where('id', isEqualTo: idTest)
+        .get();
+    print(idTest);
+    if (userTest.docs.isNotEmpty) {
+      Users_ThiNgheModels newUpdateTest =
+      Users_ThiNgheModels(id: idTest, diem: diem, solanlam: solanlam);
+      _updateResult(newUpdateTest, idTest);
+    } else {
+      Users_ThiNgheModels newTest =
+      Users_ThiNgheModels(id: idTest, diem: diem, solanlam: solanlam);
+      _createResult(newTest, idTest);
+    }
+  }
 
+  void _updateResult(Users_ThiNgheModels users_thiNgheModels, String idTest) {
+    final testCollection =
+    FirebaseFirestore.instance.collection('Users_ThiNghe');
+
+    String id = idTest;
+
+    final newTest = Users_ThiNgheModels(
+        id: users_thiNgheModels.id,
+        diem: users_thiNgheModels.diem,
+        solanlam: users_thiNgheModels.solanlam)
+        .toJSON();
+
+    testCollection.doc(id).update(newTest);
+  }
+
+  void _createResult(Users_ThiNgheModels users_thiNgheModels, String idTest) {
+    final testCollection =
+    FirebaseFirestore.instance.collection('Users_ThiNghe');
+
+    String id = idTest;
+
+    final newTest = Users_ThiNgheModels(
+        id: users_thiNgheModels.id,
+        diem: users_thiNgheModels.diem,
+        solanlam: users_thiNgheModels.solanlam)
+        .toJSON();
+
+    testCollection.doc(id).set(newTest);
+  }
+  @override
+  void dispose() {
+    audioPlayer.stop();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return isLoading?CircularProgressIndicator():Scaffold(
       appBar: AppBar(
         title: Text('GOOD LUCK!'),
         centerTitle: true,
@@ -138,14 +182,14 @@ class _ListeningTestform extends State<ListeningTestform> {
                   icon: Icon(isPlaying ? Icons.pause : Icons.play_arrow),
                 ),
                 Text(
-                    lstTest.length == 0 ? 'Đang tải' : lstTest[index].question,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20
-                ),),
+                  lstTest.length == 0 ? 'Đang tải' : lstTest[index].question,
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20
+                  ),),
                 ListTile(
                   title:
-                      Text(lstTest.length == 0 ? 'Đang tải' : lstTest[index].A),
+                  Text(lstTest.length == 0 ? 'Đang tải' : lstTest[index].A),
                   leading: Radio<int>(
                     value: 1,
                     groupValue: selectedOption,
@@ -159,7 +203,7 @@ class _ListeningTestform extends State<ListeningTestform> {
                 ),
                 ListTile(
                   title:
-                      Text(lstTest.length == 0 ? 'Đang tải' : lstTest[index].B),
+                  Text(lstTest.length == 0 ? 'Đang tải' : lstTest[index].B),
                   leading: Radio<int>(
                     value: 2,
                     groupValue: selectedOption,
@@ -173,7 +217,7 @@ class _ListeningTestform extends State<ListeningTestform> {
                 ),
                 ListTile(
                   title:
-                      Text(lstTest.length == 0 ? 'Đang tải' : lstTest[index].C),
+                  Text(lstTest.length == 0 ? 'Đang tải' : lstTest[index].C),
                   leading: Radio<int>(
                     value: 3,
                     groupValue: selectedOption,
@@ -187,7 +231,7 @@ class _ListeningTestform extends State<ListeningTestform> {
                 ),
                 ListTile(
                   title:
-                      Text(lstTest.length == 0 ? 'Đang tải' : lstTest[index].D),
+                  Text(lstTest.length == 0 ? 'Đang tải' : lstTest[index].D),
                   leading: Radio<int>(
                     value: 4,
                     groupValue: selectedOption,
@@ -229,18 +273,17 @@ class _ListeningTestform extends State<ListeningTestform> {
                                   String? made = this.getMaDe;
                                   String user = this.user!;
 
-                                  // _updateDiem(user, made!,
-                                  //     tongdiem.toString(), 1.toString());
+                                  _updateDiem(user, made!,
+                                      tongdiem.toString(), 1.toString());
                                   setState(() {
                                     isLoading = true;
                                   });
                                   Future.delayed(Duration(seconds: 1), () {
-                                    Navigator.pushAndRemoveUntil(
+                                    Navigator.pop(
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                CT_Listening()),
-                                        (route) => false);
+                                                CT_Listening()));
                                   });
                                 } else {
                                   index++;
@@ -259,18 +302,17 @@ class _ListeningTestform extends State<ListeningTestform> {
                                   String? made = this.getMaDe;
                                   String user = this.user!;
 
-                                  // _updateDiem(user, made!,
-                                  //     tongdiem.toString(), 1.toString());
+                                  _updateDiem(user, made!,
+                                      tongdiem.toString(), 1.toString());
                                   setState(() {
                                     isLoading = true;
                                   });
                                   Future.delayed(Duration(seconds: 1), () {
-                                    Navigator.pushAndRemoveUntil(
+                                    Navigator.pop(
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                CT_Listening()),
-                                        (route) => false);
+                                                CT_Listening()));
                                   });
                                 } else {
                                   index++;
