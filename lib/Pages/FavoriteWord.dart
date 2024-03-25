@@ -43,7 +43,7 @@ class _FavoritesWord extends State<FavoritesWord>{
   }
   @override
   Widget build(BuildContext context) {
-    return isLoading?Center(child: CircularProgressIndicator()):Scaffold(
+    return isLoading?Scaffold(appBar: AppBar(title:Text('Favorite Words',),centerTitle: true,),body: Center(child: Text('Bạn chưa có từ yêu thích nào!')),):Scaffold(
       appBar: AppBar(
         title: Text('Favorite Words'),
         centerTitle: true,
@@ -78,6 +78,9 @@ class _FavoritesWord extends State<FavoritesWord>{
                                 lstFavorites.removeAt(i);
                                 print(lstFavorites.length);
                                 deleteFavorite(i, lstFavorites);
+                                setState(() {
+                                  isLoading=true;
+                                });
                               },
           
                               child: Icon(

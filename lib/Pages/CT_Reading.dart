@@ -18,6 +18,8 @@ class _CT_Reading extends State<CT_Reading> {
   int getReadingCount = 0;
   int getUserReadingCount = 0;
   int index = -1;
+  int defaultIndex=0;
+  bool userDone=false;
   List<Users_ThiDocModels> lstDeUser = [];
   List<ReadingModels> lstReading = [];
   bool isLoading = false;
@@ -67,10 +69,20 @@ class _CT_Reading extends State<CT_Reading> {
       });
     }
     print('Đề có điểm '+lstDeUser.length.toString());
+    if(getReadingCount!=0){
+      setState(() {
+        userDone=true;
+      });
+    }
 
     // lastPoint=lstDeUser[0].diem.toString();
   }
-
+  String checkUserDone(String lastResult){
+    if(userDone){
+      return lastResult;
+    }
+    return '0';
+  }
   @override
   void initState() {
     _loadResult();
@@ -103,17 +115,6 @@ class _CT_Reading extends State<CT_Reading> {
                       return isLoading
                           ? Column(
                               children: readingTest!.map((e) {
-                                if (getUserReadingCount ==
-                                    lstDeUser.length - 1) {
-                                  getUserReadingCount = lstDeUser.length - 1;
-                                }
-                                print('Đề có điểm '+lstDeUser.length.toString());
-                                print('Chỉ số gốc $index');
-                                if (index == getUserReadingCount - 1) {
-                                  index = getUserReadingCount - 1;
-                                } else {
-                                  index++;
-                                }
                                 print('Chỉ số $index');
                                 return Column(
                                   children: [
@@ -165,14 +166,6 @@ class _CT_Reading extends State<CT_Reading> {
                                                     style: TextStyle(
                                                         color: Colors.white),
                                                   ),
-                                                  Text(
-                                                    'Điểm cuối cùng: ' +
-                                                        lstDeUser[index]
-                                                            .diem
-                                                            .toString(),
-                                                    style: TextStyle(
-                                                        color: Colors.white),
-                                                  )
                                                 ],
                                               ),
                                               SizedBox(
