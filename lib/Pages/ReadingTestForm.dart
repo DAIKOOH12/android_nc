@@ -68,12 +68,12 @@ class _ReadingTestForm extends State<ReadingTestForm> {
         .get();
 
     if (userTest.docs.isNotEmpty) {
-      Users_ThiDocModels newUpdateTest =
-          Users_ThiDocModels(id: idTest, diem: diem, solanlam: solanlam);
+      Users_ThiDocModels newUpdateTest = Users_ThiDocModels(
+          id: idTest, diem: diem, solanlam: solanlam, email: user.toString());
       _updateResult(newUpdateTest, idTest);
     } else {
-      Users_ThiDocModels newTest =
-          Users_ThiDocModels(id: idTest, diem: diem, solanlam: solanlam);
+      Users_ThiDocModels newTest = Users_ThiDocModels(
+          id: idTest, diem: diem, solanlam: solanlam, email: user.toString());
       _createResult(newTest, idTest);
     }
   }
@@ -87,7 +87,8 @@ class _ReadingTestForm extends State<ReadingTestForm> {
     final newTest = Users_ThiDocModels(
             id: users_thiDocModels.id,
             diem: users_thiDocModels.diem,
-            solanlam: users_thiDocModels.solanlam)
+            solanlam: users_thiDocModels.solanlam,
+            email: users_thiDocModels.email)
         .toJSON();
 
     testCollection.doc(id).update(newTest);
@@ -102,7 +103,8 @@ class _ReadingTestForm extends State<ReadingTestForm> {
     final newTest = Users_ThiDocModels(
             id: users_thiDocModels.id,
             diem: users_thiDocModels.diem,
-            solanlam: users_thiDocModels.solanlam)
+            solanlam: users_thiDocModels.solanlam,
+            email: users_thiDocModels.email)
         .toJSON();
 
     testCollection.doc(id).set(newTest);
