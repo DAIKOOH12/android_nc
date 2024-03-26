@@ -46,6 +46,12 @@ class _CT_TungVung extends State<CT_TungVung> {
     super.initState();
   }
   @override
+  void dispose() {
+    super.dispose();
+    final scaffold = ScaffoldMessenger.of(context);
+    scaffold.hideCurrentSnackBar();
+  }
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -102,7 +108,7 @@ class _CT_TungVung extends State<CT_TungVung> {
                                           print(lstFavorites);
                                         },
                                         child: Icon(
-                                          Icons.star,
+                                          Icons.favorite,
                                           color: Colors.white,
                                         ),
                                       ),
@@ -152,10 +158,7 @@ class _CT_TungVung extends State<CT_TungVung> {
     scaffold.showSnackBar(
       SnackBar(
         content: const Text('Added to favorite'),
-        action: SnackBarAction(label: 'UNDO', onPressed: (){
-          scaffold.hideCurrentSnackBar;
-
-        }),
+        duration: Duration(milliseconds: 600),
       ),
     );
     // Future.delayed(Duration(milliseconds: 100),(){

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:english_learning/Models/TestFormModels.dart';
 import 'package:english_learning/Models/Users_ThiDocModels.dart';
 import 'package:english_learning/Pages/CT_Reading.dart';
+import 'package:english_learning/Pages/ResultForm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -110,6 +111,7 @@ class _ReadingTestForm extends State<ReadingTestForm> {
   @override
   String warningText = '';
   int selectedOption = 0;
+
   @override
   @override
   Widget build(BuildContext context) {
@@ -230,11 +232,14 @@ class _ReadingTestForm extends State<ReadingTestForm> {
                                         });
                                         Future.delayed(Duration(seconds: 1),
                                             () {
-                                          Navigator.pop(
+                                          Navigator.pushAndRemoveUntil(
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      CT_Reading()));
+                                                      ResultForm(
+                                                          total: lstTest.length,
+                                                          result: tongdiem)),
+                                              (route) => false);
                                         });
                                       } else {
                                         index++;
@@ -261,11 +266,14 @@ class _ReadingTestForm extends State<ReadingTestForm> {
                                         });
                                         Future.delayed(Duration(seconds: 1),
                                             () {
-                                          Navigator.pop(
+                                          Navigator.pushAndRemoveUntil(
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      CT_Reading()));
+                                                      ResultForm(
+                                                          total: lstTest.length,
+                                                          result: tongdiem)),
+                                              (route) => false);
                                         });
                                       } else {
                                         index++;

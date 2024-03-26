@@ -7,6 +7,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'ResultForm.dart';
+
 class ListeningTestform extends StatefulWidget {
   String? made;
   String? url_audio;
@@ -144,7 +146,7 @@ class _ListeningTestform extends State<ListeningTestform> {
   }
   @override
   Widget build(BuildContext context) {
-    return isLoading?CircularProgressIndicator():Scaffold(
+    return isLoading?Center(child: CircularProgressIndicator()):Scaffold(
       appBar: AppBar(
         title: Text('GOOD LUCK!'),
         centerTitle: true,
@@ -279,11 +281,14 @@ class _ListeningTestform extends State<ListeningTestform> {
                                     isLoading = true;
                                   });
                                   Future.delayed(Duration(seconds: 1), () {
-                                    Navigator.pop(
+                                    Navigator.pushAndRemoveUntil(
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                CT_Listening()));
+                                                ResultForm(
+                                                    total: lstTest.length,
+                                                    result: tongdiem)),
+                                            (route) => false);
                                   });
                                 } else {
                                   index++;
@@ -308,11 +313,14 @@ class _ListeningTestform extends State<ListeningTestform> {
                                     isLoading = true;
                                   });
                                   Future.delayed(Duration(seconds: 1), () {
-                                    Navigator.pop(
+                                    Navigator.pushAndRemoveUntil(
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                CT_Listening()));
+                                                ResultForm(
+                                                    total: lstTest.length,
+                                                    result: tongdiem)),
+                                            (route) => false);
                                   });
                                 } else {
                                   index++;
