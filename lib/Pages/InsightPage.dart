@@ -44,7 +44,9 @@ class _InsightPage extends State<InsightPage> {
     if (userThiDoc.docs.isNotEmpty) {
       userReadingDone=userThiDoc.docs.length;
     }
-
+    else{
+      userReadingDone=0;
+    }
     //Lấy bài nghe đã làm của user
     final userThiNghe = await FirebaseFirestore.instance
         .collection('Users_ThiNghe')
@@ -52,6 +54,9 @@ class _InsightPage extends State<InsightPage> {
         .get();
     if (userThiNghe.docs.isNotEmpty) {
       userListeningDone=userThiNghe.docs.length;
+    }
+    else{
+      userListeningDone=0;
     }
     setState(() {
       isLoading=false;
