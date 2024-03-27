@@ -12,19 +12,20 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'firebase_auth/firebase_auth_services.dart';
 import 'firebase_options.dart';
+
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(MyApp());
 }
-class MyApp extends StatelessWidget{
+
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    User? firebaseUser=FirebaseAuth.instance.currentUser;
-     if(firebaseUser!=null){
-       return MainPage();
-     }
-     return LoginOptions();
+    User? firebaseUser = FirebaseAuth.instance.currentUser;
+    if (firebaseUser != null) {
+      return MainPage();
+    }
+    return LoginOptions();
   }
-
 }
