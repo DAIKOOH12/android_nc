@@ -48,7 +48,7 @@ class _tienDoState extends State<tienDo> {
         listTienDo[index].nghe = nghe/60;
         listTienDo[index].tuVung = tuVung/60;
         listTienDo[index].nguPhap = nguPhap/60;
-        listTienDo[index].percent = (tuVung+nguPhap+nghe)/60/30;
+        listTienDo[index].percent = (tuVung+nguPhap+nghe)/60;
         // print(listTienDo[index].percent);
       });
     }
@@ -200,7 +200,7 @@ class _tienDoState extends State<tienDo> {
               calendarBuilders: CalendarBuilders(
                 defaultBuilder: (context, day, focusedDay) {
                   int soNgay = _lastDayOfMonth.difference(day).inDays;
-                  print(listTienDo);
+                  // print(listTienDo);
 
                   return GestureDetector(
                     onTap: () {
@@ -221,11 +221,12 @@ class _tienDoState extends State<tienDo> {
                             // backgroundWidth: ,
                             lineWidth: 8,
 
-                            percent: listTienDo[length -1 - soNgay].percent,
+                            // percent: listTienDo[length -1 - soNgay].percent/30,
+                            percent: (listTienDo[length -1 - soNgay].percent - (listTienDo[length -1 - soNgay].percent ~/ 30) * 30)/30,
                             animation: true,
                             animationDuration: 2000,
-                            progressColor: Color(0xFF0EAD00),
-                            backgroundColor: Colors.blueGrey.shade200,
+                            progressColor: listTienDo[length -1 - soNgay].percent <= 30 ? Color(0xFF0EAD00) : Colors.green[900],
+                            backgroundColor: listTienDo[length -1 - soNgay].percent <= 30 ? Colors.blueGrey.shade200 : Color(0xFF0EAD00),
                             circularStrokeCap: CircularStrokeCap.round,
                             // center: Text('70%', style: TextStyle(color: Colors.white),),
                           ),
