@@ -1,7 +1,8 @@
-import 'dart:ffi';
+// import 'dart:ffi';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:german_for_u/obj/obj_DapAnLN.dart';
 import 'package:german_for_u/obj/obj_LuyenNghe.dart';
@@ -37,6 +38,45 @@ class _chiTietLuyenNgheState extends State<CTLN> {
   int ind = 0;
 
   List<obj_luyenNghe> listBTL = [];
+
+  int dem = 0;
+  String id = "";
+  DateTime startTime = DateTime.now();
+
+  Future getDem() async {
+    var date = DateTime.now();
+    var dNgay = date.day.toString() + '/' + date.month.toString() + '/' + date.year.toString();
+    print(dNgay);
+    final getDem = await FirebaseFirestore.instance.collection('tienDo')
+        .where('sEmail', isEqualTo: FirebaseAuth.instance.currentUser!.email)
+        .where('dNgay', isEqualTo: dNgay)
+        .get();
+
+    if(getDem.docs.isNotEmpty) {
+      getDem.docs.forEach((element) {
+        setState(() {
+          dem = element['iNghe'];
+          id = element.id;
+        });
+      });
+    }
+
+  }
+
+  Future updateNghe(int dem2) async {
+    try {
+      await FirebaseFirestore.instance.collection('tienDo')
+          .doc(id)
+          .update(
+          {
+            'iNghe': dem + dem2
+          }
+      );
+      print(dem+dem2);
+    } catch (e) {
+      print(e.toString());
+    }
+  }
 
 
   Future getBaiTapLuyen() async {
@@ -106,7 +146,12 @@ class _chiTietLuyenNgheState extends State<CTLN> {
 
 
     super.initState();
-    getBaiTapLuyen();
+
+      getDem();
+    Future.delayed(Duration(milliseconds: 1000), () {
+      getBaiTapLuyen();
+    });
+
 
     audioPlayer.onDurationChanged.listen((event) {
       setState(() {
@@ -210,6 +255,10 @@ class _chiTietLuyenNgheState extends State<CTLN> {
       audioPlayer.stop();
       audioPlayer.dispose();
     }
+    DateTime endTime = DateTime.now();
+    Duration timeOpen = endTime!.difference(startTime);
+    print('Page opened for: ${timeOpen.inSeconds} seconds');
+    updateNghe(timeOpen.inSeconds);
     super.dispose();
   }
 
@@ -283,76 +332,95 @@ class _chiTietLuyenNgheState extends State<CTLN> {
                       color: Colors.grey[200]),
                   child: Column(
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          IconButton(
-                            icon: Icon(
-                                isPlaying ? Icons.pause : Icons.play_arrow),
-                                // isPlayingList[ind] ? Icons.pause : Icons.play_arrow),
-                            iconSize: 40,
-                            onPressed: () async {
-                              // print(listBTL.length);
-                              // print(lstDapAn[5]);
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Color(0xFF00BC4B),
+                          borderRadius: BorderRadius.only(topRight: Radius.circular(18), topLeft: Radius.circular(18))
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            IconButton(
+                              icon: Icon(
+                                  isPlaying ? Icons.pause : Icons.play_arrow),
+                                  // isPlayingList[ind] ? Icons.pause : Icons.play_arrow),
+                              iconSize: 40,
+                              onPressed: () async {
+                                // print(listBTL.length);
+                                // print(lstDapAn[5]);
 
 
-                              start = true;
-                              if (!isPlaying) {
-                                // Chạy file mp3 khi container được bấm vào
-                                // await audioPlayer.setSourceUrl(url)
-                                await audioPlayer.play(UrlSource(listBTL[ind].link));
-                                // setAudio(index);
-                              } else {
-                                // Tạm dừng phát nhạc khi container được bấm vào một lần nữa
-                                // await audioPlayer.pause();
-                                await audioPlayer.pause();
-                              }
-                              setState(() {
-                                // Đảm bảo chỉ container được bấm vào mới được cập nhật trạng thái chơi nhạc
-                                isPlaying = !isPlaying;
-                              });
+                                start = true;
+                                if (!isPlaying) {
+                                  // Chạy file mp3 khi container được bấm vào
+                                  // await audioPlayer.setSourceUrl(url)
+                                  await audioPlayer.play(UrlSource(listBTL[ind].link));
+                                  // setAudio(index);
+                                } else {
+                                  // Tạm dừng phát nhạc khi container được bấm vào một lần nữa
+                                  // await audioPlayer.pause();
+                                  await audioPlayer.pause();
+                                }
+                                setState(() {
+                                  // Đảm bảo chỉ container được bấm vào mới được cập nhật trạng thái chơi nhạc
+                                  isPlaying = !isPlaying;
+                                });
 
-                              // if (isPlaying) {
-                              //   await audioPlayer.pause();
-                              // } else {
-                              //   // String url =
-                              //   //     "https://firebasestorage.googleapis.com/v0/b/german-for-u.appspot.com/o/so_dem.mp3?alt=media&token=0605a7ec-4983-465c-9aa0-2e2e238f8c97";
-                              //   // Source source = Source.fromString(url);
-                              //   // await audioPlayer.setSourceUrl(url);
-                              //   await audioPlayer.play(UrlSource(listBTL[index].link));
-                              // }
-                            },
-                          ),
-                          Slider(
-                            min: 0,
-                            max: sliderMax,
-                            value: position.inSeconds.toDouble(),
-                            thumbColor: Colors.green,
-                            onChanged: (value) async {
-                              // final positionss =
-                              // Duration(seconds: value.toInt());
-                              await audioPlayer.seek(
-                                  Duration(seconds: value.toInt())
-                              );
-                              setState(() {
-                                position = Duration(seconds: value.toInt());
-                              });
-                              await audioPlayer.resume();
-                            },
-                          ),
-                          Text(
-                            formatTime(duration - position),
-                          ),
-                        ],
+                                // if (isPlaying) {
+                                //   await audioPlayer.pause();
+                                // } else {
+                                //   // String url =
+                                //   //     "https://firebasestorage.googleapis.com/v0/b/german-for-u.appspot.com/o/so_dem.mp3?alt=media&token=0605a7ec-4983-465c-9aa0-2e2e238f8c97";
+                                //   // Source source = Source.fromString(url);
+                                //   // await audioPlayer.setSourceUrl(url);
+                                //   await audioPlayer.play(UrlSource(listBTL[index].link));
+                                // }
+                              },
+                            ),
+                            Slider(
+                              min: 0,
+                              max: sliderMax,
+                              value: position.inSeconds.toDouble(),
+                              thumbColor: Colors.white,
+                              onChanged: (value) async {
+                                // final positionss =
+                                // Duration(seconds: value.toInt());
+                                await audioPlayer.seek(
+                                    Duration(seconds: value.toInt())
+                                );
+                                setState(() {
+                                  position = Duration(seconds: value.toInt());
+                                });
+                                await audioPlayer.resume();
+                              },
+                            ),
+                            Text(
+                              formatTime(duration - position),
+                            ),
+                          ],
+                        ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: listBTL.isNotEmpty ? Text(listBTL[ind].cauHoi) : SizedBox(),
+                      Container(
+                        width: size.width*0.85,
+                        decoration: BoxDecoration(
+                            color: Color(0xFF00BC4B),
+                            // borderRadius: BorderRadius.only(topRight: Radius.circular(18), topLeft: Radius.circular(18))
+                        ),
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 20),
+                              child: listBTL.isNotEmpty ? Text(listBTL[ind].cauHoi) : SizedBox(),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 20),
+                              child: listBTL.isNotEmpty ? Text(listBTL[ind].tieuDe) : CircularProgressIndicator(),
+                            ),
+                            SizedBox(height: 10,)
+                          ],
+                        ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: listBTL.isNotEmpty ? Text(listBTL[ind].tieuDe) : CircularProgressIndicator(),
-                      ),
+
                       Expanded(
                         child: ListView(
                           physics: NeverScrollableScrollPhysics(),

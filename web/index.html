@@ -18,18 +18,19 @@
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="gfu_project">
-
+  <meta name="description" content="A new Flutter project.">
+<!--  <meta name="google-signin-client_id" content="446152477698-gh8f6f6q75n1atumm4a2kn69hbnpmbm1.apps.googleusercontent.com">-->
+  <meta name="google-signin-client_id" content="446152477698-8vomkhck82lvim55htgm3t0k6o1276qo.apps.googleusercontent.com">
   <!-- iOS meta tags & icons -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="german_for_u">
+  <meta name="apple-mobile-web-app-title" content="untitled">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png"/>
 
-  <title>german_for_u</title>
+  <title>untitled</title>
   <link rel="manifest" href="manifest.json">
 
   <script>
@@ -40,7 +41,7 @@
   <script src="flutter.js" defer></script>
 </head>
 <body>
-  <script>
+<script>
     window.addEventListener('load', function(ev) {
       // Download main.dart.js
       _flutter.loader.loadEntrypoint({
@@ -55,5 +56,27 @@
       });
     });
   </script>
+
+
+    <script type="module">
+      // Import the functions you need from the SDKs you need
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+      // TODO: Add SDKs for Firebase products that you want to use
+      // https://firebase.google.com/docs/web/setup#available-libraries
+
+      // Your web app's Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyB3Du6aN2iMY-bG77bijJAac4QlyLS7BXA",
+        authDomain: "german-for-u.firebaseapp.com",
+        projectId: "german-for-u",
+        storageBucket: "german-for-u.appspot.com",
+        messagingSenderId: "446152477698",
+        appId: "1:446152477698:web:fdb105ef5cca0b09b56b1b"
+      };
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+    </script>
+
 </body>
 </html>

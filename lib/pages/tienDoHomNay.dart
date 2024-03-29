@@ -42,11 +42,11 @@ class _tienDoHomNayState extends State<tienDoHomNay> with SingleTickerProviderSt
 
     setState(() {
       // listPercent[index] = (tuVung+nguPhap+nghe)/30;
-      listTienDo[index].nghe = nghe;
-      listTienDo[index].tuVung = tuVung;
-      listTienDo[index].nguPhap = nguPhap;
-      listTienDo[index].percent = (tuVung+nguPhap+nghe)/30;
-
+      listTienDo[index].nghe = nghe/60;
+      listTienDo[index].tuVung = tuVung/60;
+      listTienDo[index].nguPhap = nguPhap/60;
+      listTienDo[index].percent = (tuVung+nguPhap+nghe)/60/30;
+      // print(listTienDo[6].percent);
     });
   }
 
@@ -246,6 +246,7 @@ class _tienDoHomNayState extends State<tienDoHomNay> with SingleTickerProviderSt
                                 lineWidth: 5,
                                 percent: listTienDo[6].percent,
                                 progressColor: Color(0xFF0EAD00),
+
                               ),
                               // SizedBox(height: 3),
                             ],
