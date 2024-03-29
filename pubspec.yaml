@@ -57,9 +57,10 @@ dependencies:
 #  syncfusion_flutter_pdfviewer: ^24.2.7
 
 flutter_launcher_icons:
-  android: true
+  android: false
   ios: true
   image_path: "images/logo_gfu.png"
+  remove_alpha_ios: true
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
