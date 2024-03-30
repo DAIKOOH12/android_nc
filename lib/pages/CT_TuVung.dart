@@ -200,11 +200,11 @@ class _CT_TuVungState extends State<CT_TuVung> {
               children: [
                 Center(
                   child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 15),
                     width: 300,
                     child: ListView.separated(
                       itemCount: listAnhThe.length,
                       shrinkWrap: true,
-
                       separatorBuilder: (context, index) {
                         return SizedBox(height: 10,);
                       },
@@ -321,7 +321,8 @@ class _CT_TuVungState extends State<CT_TuVung> {
                       // );
                     },
                   ),
-                )
+                ),
+                SizedBox(height: 15,)
               ],
             ),
           ),

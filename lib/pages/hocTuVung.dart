@@ -1,7 +1,10 @@
+import 'dart:async';
 import 'dart:math';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:german_for_u/obj/DT_tuVung.dart';
+
 
 class hocTuVung extends StatefulWidget {
   final List<DT_tuVung> listTuVung;
@@ -18,8 +21,10 @@ class _hocTuVungState extends State<hocTuVung> {
 
   late int ind;
   late int indexAnswer;
+  // late List<obj_anwser> listRandomAnswer = [];
   late List<String> listRandomAnswer = [];
   Random random =Random();
+
 
 
   @override
@@ -36,22 +41,27 @@ class _hocTuVungState extends State<hocTuVung> {
   }
 
   void getListRandomAnswer() {
+    // List<String> a = [];
     String answer = "";
     for(int i =0; i<4 ; i++ ){
       answer = widget.listTu[random.nextInt(widget.listTu.length)];
-      if(answer != widget.listTuVung[ind].tu)
+      if(answer != widget.listTuVung[ind].tu && !listRandomAnswer.contains(answer)) {
         listRandomAnswer.add(answer);
+      }
+
       else
         i--;
     }
     setState(() {
-
+      // listRandomAnswer.add(new obj_anwser(_A, _B, _C, _D));
     });
 
   }
 
 
-  void _showIncorrectAnswerDialog(BuildContext context, int index) {
+  Future<bool> _showIncorrectAnswerDialog(BuildContext context, int index) {
+
+    Completer<bool> completer = Completer<bool>();
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -92,7 +102,7 @@ class _hocTuVungState extends State<hocTuVung> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  widget.listTuVung[ind-1].nghia,
+                  widget.listTuVung[ind].nghia,
                 ),
                 SizedBox(height: 7,),
                 Text(
@@ -103,7 +113,7 @@ class _hocTuVungState extends State<hocTuVung> {
                 ),
 
                 Text(
-                  widget.listTuVung[ind-1].tu,
+                  widget.listTuVung[ind].tu,
                   style: TextStyle(
                     // color: Colors.green,
                   ),
@@ -112,7 +122,7 @@ class _hocTuVungState extends State<hocTuVung> {
                 Text(
                   'Đáp án của bạn:',
                   style: TextStyle(
-                    color: Colors.green,
+                    color: Colors.red,
                   ),
                 ),
                 Text(
@@ -136,6 +146,7 @@ class _hocTuVungState extends State<hocTuVung> {
 
                   onPressed: () {
                     Navigator.of(context).pop(); // Đóng cửa sổ dialog
+                    completer.complete(true);
                   },
                   color: Colors.green,
                   shape: RoundedRectangleBorder(
@@ -149,9 +160,11 @@ class _hocTuVungState extends State<hocTuVung> {
         );
       },
     );
+    return completer.future;
   }
 
   void _showCorrectAnswerDialog(BuildContext context, int index) {
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -232,11 +245,13 @@ class _hocTuVungState extends State<hocTuVung> {
       appBar: AppBar(),
       body: Column(
         children: [
-          Text(widget.listTuVung[ind].nghia),
+          Text(widget.listTuVung[ind].nghia, style: TextStyle(fontSize: 21),),
           Container(
             width: 290,
             child: Image.network(widget.listTuVung[ind].linkAnh),
+            padding: EdgeInsets.all(10),
           ),
+
           Center(
             child: Container(
               width: 290,
@@ -245,19 +260,25 @@ class _hocTuVungState extends State<hocTuVung> {
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
                   return GestureDetector(
-                    onTap: () {
+                    onTap: () async {
                       if(index != indexAnswer) {
-                        _showIncorrectAnswerDialog(context,index);
+                        await _showIncorrectAnswerDialog(context,index);
                       }
                       else {
                         _showCorrectAnswerDialog(context, index);
                       }
-                      setState(() {
-                        ind ++;
-                        indexAnswer = random.nextInt(4);
-                        listRandomAnswer.clear();
-                        getListRandomAnswer();
-                      });
+                      if(ind == widget.listTuVung.length-1) {
+
+                      }
+                      else {
+                        setState(() {
+                          ind ++;
+                          indexAnswer = random.nextInt(4);
+                          listRandomAnswer.clear();
+                          getListRandomAnswer();
+                        });
+                      }
+
                     },
                     child: Container(
                       width: 290,
