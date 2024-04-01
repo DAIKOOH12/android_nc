@@ -102,31 +102,42 @@ class _trangChuState extends State<trangChu> {
             child: ListView(
               children: [
                 Container(
+                  constraints: BoxConstraints(
+                    maxWidth: 50
+                  ),
                   padding: EdgeInsets.all(10),
                   height: 100,
                   color: Colors.green,
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(name, style: TextStyle(fontSize: 18),),
                       Text(sEmail),
                     ],
                   ),
                 ),
-                MaterialButton(
+                ElevatedButton(
                   onPressed: (){
                     Navigator.push(context, MaterialPageRoute(builder: (context){
                       return tienDoHomNay();
                     }));
                   },
-                  minWidth: size.width * 0.75,
-                  color: Colors.grey[200],
-                  child: Text(
-                    'Quá trình học tập',
-                    style: TextStyle(
+                  style: ElevatedButton.styleFrom(
 
-                    ),
                   ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.insert_chart),
+                      Text(
+                        'Quá trình học tập',
+                        style: TextStyle(
+
+                        ),
+                      ),
+                    ],
+                  )
                 ),
                 Center(
                   child: MaterialButton(
