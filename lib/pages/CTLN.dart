@@ -281,7 +281,7 @@ class _chiTietLuyenNgheState extends State<CTLN> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
 
-    return Material(
+    return listBTL.isNotEmpty ?Material(
       child: SafeArea(
         child: Scaffold(
           appBar: AppBar(
@@ -316,7 +316,7 @@ class _chiTietLuyenNgheState extends State<CTLN> {
               },
             ),
             centerTitle: true,
-            title: Text("Test 1"),
+            title: Text("Test 1",style: TextStyle(color: Colors.white),),
             backgroundColor: Color(0xFF007C1B),
             toolbarHeight: 70,
           ),
@@ -329,12 +329,20 @@ class _chiTietLuyenNgheState extends State<CTLN> {
                   width: size.width * 0.85,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(18),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Color.fromRGBO(168, 168, 168, 0.4),
+                          spreadRadius: 2,
+                          blurRadius: 1,
+                          offset: Offset(0, 3),
+                        ),
+                      ],
                       color: Colors.grey[200]),
                   child: Column(
                     children: [
                       Container(
                         decoration: BoxDecoration(
-                          color: Color(0xFF00BC4B),
+                          color: Color(0xFF00A443),
                           borderRadius: BorderRadius.only(topRight: Radius.circular(18), topLeft: Radius.circular(18))
                         ),
                         child: Row(
@@ -403,18 +411,18 @@ class _chiTietLuyenNgheState extends State<CTLN> {
                       Container(
                         width: size.width*0.85,
                         decoration: BoxDecoration(
-                            color: Color(0xFF00BC4B),
+                            color: Color(0xFF00A443),
                             // borderRadius: BorderRadius.only(topRight: Radius.circular(18), topLeft: Radius.circular(18))
                         ),
                         child: Column(
                           children: [
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 20),
-                              child: listBTL.isNotEmpty ? Text(listBTL[ind].cauHoi) : SizedBox(),
+                              child: listBTL.isNotEmpty ? Text(listBTL[ind].cauHoi,style: TextStyle(color: Colors.white),) : SizedBox(),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 20),
-                              child: listBTL.isNotEmpty ? Text(listBTL[ind].tieuDe) : CircularProgressIndicator(),
+                              child:  Text(listBTL[ind].tieuDe,style: TextStyle(color: Colors.white),) ,
                             ),
                             SizedBox(height: 10,)
                           ],
@@ -487,10 +495,7 @@ class _chiTietLuyenNgheState extends State<CTLN> {
                 SizedBox(height: 20,),
 
                 Center(
-                  child: MaterialButton(
-                    minWidth: 200,
-                    height: 60,
-                    color: Colors.green,
+                  child: ElevatedButton(
                     onPressed: () async {
 
                       // int count = 0;
@@ -501,7 +506,7 @@ class _chiTietLuyenNgheState extends State<CTLN> {
                       // }
                       // print(count);
                       if(lstDapAn[ind] == ""){
-                        _showSnackBar(context, "Bạn chưa chọn đáp án");
+                        _showTemporaryDialog(context, "Bạn chưa chọn đáp án",false);
                       }
                       else {
                         if(lstDapAn[ind] ==listBTL[ind].dapAn){
@@ -523,6 +528,9 @@ class _chiTietLuyenNgheState extends State<CTLN> {
 
 
                     },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green
+                    ),
                     child: Text("Kiểm tra", style: TextStyle(
                         color: Colors.white70
                     ),),
@@ -535,7 +543,7 @@ class _chiTietLuyenNgheState extends State<CTLN> {
           ),
         ),
       ),
-    );
+    ):Scaffold(body: Center(child: CircularProgressIndicator(),));
   }
 }
 

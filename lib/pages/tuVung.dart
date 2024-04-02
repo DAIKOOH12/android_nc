@@ -63,7 +63,15 @@ class _tuVungState extends State<tuVung> {
                   height: 244,
                   decoration: BoxDecoration(
                     color: Color(0xff0039500),
-                    borderRadius: BorderRadius.circular(20)
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 2,
+                        blurRadius: 2,
+                        offset: Offset(0, 3), // changes position of shadow
+                      ),
+                    ],
                   ),
                   child: Stack(
                     children: [
@@ -81,6 +89,7 @@ class _tuVungState extends State<tuVung> {
                                 style: TextStyle(
                                     fontSize: 40,
                                     color: Colors.white,
+                                    fontWeight: FontWeight.bold
                                     // fontFamily: 'Itim'
                                 ),
                               )
@@ -99,7 +108,15 @@ class _tuVungState extends State<tuVung> {
                   height: 244,
                   decoration: BoxDecoration(
                       color: Color(0xFF77D79D),
-                      borderRadius: BorderRadius.circular(20)
+                      borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 2,
+                        blurRadius: 2,
+                        offset: Offset(0, 3), // changes position of shadow
+                      ),
+                    ],
                   ),
                   child: Stack(
                     children: [
@@ -107,21 +124,24 @@ class _tuVungState extends State<tuVung> {
                           child: Column(
                             children: [
                               ImageIcon(
-
                                 AssetImage('images/education.png'),
                                 size: 40,
-                                color: Colors.white,
+                                color: Colors.black,
                               ),
                               SizedBox(height: 100,),
                               Text(
                                 'Luyện tập',
-                                style: TextStyle(fontSize: 15, color: Colors.white),
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    color: Colors.black,
+                                ),
                               ),
                               Text(
                                 '2/2',
                                 style: TextStyle(
                                   fontSize: 40,
-                                  color: Colors.white,
+                                  color: Colors.black,
+                                    fontWeight: FontWeight.bold
                                   // fontFamily: 'Itim'
                                 ),
                               )
@@ -166,8 +186,16 @@ class _tuVungState extends State<tuVung> {
                       width: size.width* 0.85,
                       height: size.height * 0.1,
                       decoration: BoxDecoration(
-                          color: Color(0xFFD9D9D9).withOpacity(0.31),
-                          borderRadius: BorderRadius.circular(18)
+                          color: Color(0xFFF3F3F3).withOpacity(1),
+                          borderRadius: BorderRadius.circular(18),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color.fromRGBO(194, 194, 194, 0.8),
+                            spreadRadius: 2,
+                            blurRadius: 2,
+                            offset: Offset(0, 3), // changes position of shadow
+                          ),
+                        ],
                       ),
                       child: Stack(
                         children: [

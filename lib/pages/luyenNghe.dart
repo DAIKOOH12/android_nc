@@ -11,30 +11,26 @@ class luyenNghe extends StatefulWidget {
 }
 
 class _luyenNgheState extends State<luyenNghe> {
-
   List<String> listBT = [];
   List<String> listId = [];
   late String id;
 
-  Future getBaiLuyen () async {
-    final result = await FirebaseFirestore.instance.collection('baiTapLuyen')
+  Future getBaiLuyen() async {
+    final result = await FirebaseFirestore.instance
+        .collection('baiTapLuyen')
         .where('sMaKN', isEqualTo: "KN_N")
         .get();
 
-    if(result.docs.isNotEmpty) {
+    if (result.docs.isNotEmpty) {
       result.docs.forEach((value) {
         listBT.add(value['sTenBTL']);
         listId.add(value.id);
       });
     }
 
-    if(mounted ){
-      setState(() {
-
-      });
+    if (mounted) {
+      setState(() {});
     }
-
-
   }
 
   @override
@@ -51,37 +47,44 @@ class _luyenNgheState extends State<luyenNghe> {
       child: SafeArea(
         child: Scaffold(
           appBar: AppBar(
-            title: Text('Các bài luyện'),
+            title: Text(
+              'Các bài luyện',
+              style: TextStyle(color: Colors.white),
+            ),
             centerTitle: true,
             backgroundColor: Color(0xFF007C1B),
             toolbarHeight: size.height * 0.1,
             // shape: BorderRadius.circular(19),/\
           ),
-
           body: ListView.builder(
             // separatorBuilder: (BuildContext context, int index) => const Divider(),
             itemBuilder: (context, index) {
               return GestureDetector(
-                onTap: (){
-                  Navigator.push (
-                      context,
-                      MaterialPageRoute(builder: (context) {
-                        return CTLN(maBT: listId[index]);
-                        // return chiTietLuyenNghe(maBT: listId[index],);
-                      }));
-
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return CTLN(maBT: listId[index]);
+                    // return chiTietLuyenNghe(maBT: listId[index],);
+                  }));
                 },
-
                 child: Column(
                   children: [
-                    SizedBox(height: 30,),
+                    SizedBox(
+                      height: 30,
+                    ),
                     Center(
                       child: Container(
                         width: size.width * 0.85,
-                        height: size.height* 0.1,
-
+                        height: size.height * 0.1,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(18),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Color.fromRGBO(168, 168, 168, 0.4),
+                              spreadRadius: 2,
+                              blurRadius: 1,
+                              offset: Offset(0, 3),
+                            ),
+                          ],
                           color: Colors.grey[200],
                         ),
                         child: Stack(
@@ -92,31 +95,23 @@ class _luyenNgheState extends State<luyenNghe> {
                               bottom: 0,
                               child: Row(
                                 children: [
-                                  ImageIcon(
-                                      AssetImage('images/headphone.png')
-                                  ),
-
+                                  ImageIcon(AssetImage('images/headphone.png')),
                                   SizedBox(width: 20),
-
                                   Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
                                         listBT[index],
                                         style: TextStyle(
                                             fontSize: 18,
-                                            fontWeight: FontWeight.w700
-                                        ),
+                                            fontWeight: FontWeight.w700),
                                       ),
-
                                       Text(
                                         'Luyện nghe bài tập này',
-                                        style: TextStyle(
-                                            fontSize: 13
-                                        ),
+                                        style: TextStyle(fontSize: 13),
                                       ),
-
                                     ],
                                   ),
                                   SizedBox(width: 50),
@@ -124,10 +119,8 @@ class _luyenNgheState extends State<luyenNghe> {
                                     '70%',
                                     style: TextStyle(
                                         fontWeight: FontWeight.w700,
-                                        fontSize: 15
-                                    ),
+                                        fontSize: 15),
                                   )
-
                                 ],
                               ),
                             )
@@ -135,19 +128,14 @@ class _luyenNgheState extends State<luyenNghe> {
                         ),
                       ),
                     )
-
                   ],
                 ),
               );
             },
-            itemCount: listBT.length,),
+            itemCount: listBT.length,
+          ),
         ),
-
       ),
     );
   }
-
-
 }
-
-

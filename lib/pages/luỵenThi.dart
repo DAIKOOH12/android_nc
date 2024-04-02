@@ -46,6 +46,14 @@ class _luyenThiState extends State<luyenThi> {
                         decoration: BoxDecoration(
                           color: Color(0xFFD7FFDB),
                           borderRadius: BorderRadius.circular(18),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Color.fromRGBO(168, 168, 168, 0.4),
+                              spreadRadius: 2,
+                              blurRadius: 1,
+                              offset: Offset(0, 3),
+                            ),
+                          ],
                         ),
                         child: Stack(
                           children: [
@@ -62,7 +70,8 @@ class _luyenThiState extends State<luyenThi> {
                                   ),
                                     child: Center(
                                       child: Text(
-                                          'Horen'
+                                          'Horen',
+                                        style: TextStyle(color: Colors.white,fontSize: 25),
                                       ),
                                     )
                                 )
@@ -118,6 +127,14 @@ class _luyenThiState extends State<luyenThi> {
                       decoration: BoxDecoration(
                         color: Color(0xFFD7FFDB),
                         borderRadius: BorderRadius.circular(18),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color.fromRGBO(168, 168, 168, 0.4),
+                            spreadRadius: 2,
+                            blurRadius: 1,
+                            offset: Offset(0, 3),
+                          ),
+                        ],
                       ),
                       child: Stack(
                         children: [
@@ -134,7 +151,8 @@ class _luyenThiState extends State<luyenThi> {
                                   ),
                                   child: Center(
                                     child: Text(
-                                        'Prüfungsvorbereitung'
+                                        'Prüfungsvorbereitung',
+                                      style: TextStyle(fontSize: 25,color: Colors.white),
                                     ),
                                   )
                               )

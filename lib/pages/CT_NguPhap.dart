@@ -10,13 +10,15 @@ import 'package:german_for_u/pages/BT_nguPhap.dart';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
-// import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
-// import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
+// import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+// import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class CT_nguPhap extends StatefulWidget {
   String idNguPhap;
   String link;
+
   CT_nguPhap({super.key, required this.idNguPhap, required this.link});
 
   @override
@@ -24,7 +26,6 @@ class CT_nguPhap extends StatefulWidget {
 }
 
 class _newState extends State<CT_nguPhap> {
-
   String urlPDFPath = "";
   bool loaded = false;
   DateTime startTime = DateTime.now();
@@ -33,14 +34,19 @@ class _newState extends State<CT_nguPhap> {
 
   Future getDem() async {
     var date = DateTime.now();
-    var dNgay = date.day.toString() + '/' + date.month.toString() + '/' + date.year.toString();
+    var dNgay = date.day.toString() +
+        '/' +
+        date.month.toString() +
+        '/' +
+        date.year.toString();
     print(dNgay);
-    final getDem = await FirebaseFirestore.instance.collection('tienDo')
+    final getDem = await FirebaseFirestore.instance
+        .collection('tienDo')
         .where('sEmail', isEqualTo: FirebaseAuth.instance.currentUser!.email)
         .where('dNgay', isEqualTo: dNgay)
         .get();
 
-    if(getDem.docs.isNotEmpty) {
+    if (getDem.docs.isNotEmpty) {
       getDem.docs.forEach((element) {
         setState(() {
           dem = element['iNguPhap'];
@@ -48,9 +54,7 @@ class _newState extends State<CT_nguPhap> {
         });
       });
     }
-
   }
-
 
   Future<File> getFileFromUrl(String url) async {
     var data = await http.get(Uri.parse(url));
@@ -63,14 +67,11 @@ class _newState extends State<CT_nguPhap> {
 
   Future updateNguPhap(int dem2) async {
     try {
-      await FirebaseFirestore.instance.collection('tienDo')
+      await FirebaseFirestore.instance
+          .collection('tienDo')
           .doc(id)
-          .update(
-          {
-            'iNguPhap': dem + dem2
-          }
-      );
-      print(dem+dem2);
+          .update({'iNguPhap': dem + dem2});
+      print(dem + dem2);
     } catch (e) {
       print(e.toString());
     }
@@ -79,7 +80,7 @@ class _newState extends State<CT_nguPhap> {
   @override
   void initState() {
     getFileFromUrl(widget.link).then(
-          (value) => {
+      (value) => {
         setState(() {
           urlPDFPath = value.path;
           loaded = true;
@@ -89,7 +90,6 @@ class _newState extends State<CT_nguPhap> {
     getDem();
     super.initState();
   }
-
 
   @override
   void dispose() {
@@ -102,97 +102,57 @@ class _newState extends State<CT_nguPhap> {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: SafeArea(
-        child: Scaffold(
-          backgroundColor: Colors.green,
-          appBar: AppBar(),
-          // body: SfPdfViewer.network("https://firebasestorage.googleapis.com/v0/b/german-for-u.appspot.com/o/tudehoi.pdf?alt=media&token=1a78a2d7-9cb4-4926-aed9-05cfb2c4382c"),
-          // body: SfPdfViewer.network("https://firebasestorage.googleapis.com/v0/b/german-for-u.appspot.com/o/tudehoi.pdf?alt=media&token=1a78a2d7-9cb4-4926-aed9-05cfb2c4382c")
-          body: SingleChildScrollView(
-            child: Column(
-              children: [
-                // SfPdfViewer.network("https://firebasestorage.googleapis.com/v0/b/german-for-u.appspot.com/o/tudehoi.pdf?alt=media&token=1a78a2d7-9cb4-4926-aed9-05cfb2c4382c"),
-                loaded ? Center(
-                  child: Container(
-                    margin: EdgeInsets.only(top: 40),
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height * 0.7,
-                    child: PDFView(
-                      enableSwipe: true,
-                      swipeHorizontal: false,
-                      autoSpacing: false,
-                      pageSnap: true,
-                      pageFling: false,
-                      onError: (error) {
-                        print(error.toString());
-                      },
-                      filePath: urlPDFPath,
-                      // swipeHorizontal: true,
-                    ),
-                  ),
-                ) : Center(child: CircularProgressIndicator()),
-
-                MaterialButton(
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) {
-                        return BT_NguPhap(id: widget.idNguPhap,);
-                      })
-                    );
-                  },
-                  color: Colors.blue,
-                  child: Text("Luyện tập"),
-                ),
-
-              ],
-            ),
-          ),
-        ),
+    return Scaffold(
+      backgroundColor: Colors.green,
+      appBar: AppBar(
+        title: Text('Ngữ Pháp'),
+        centerTitle: true,
       ),
+      // body: SfPdfViewer.network("https://firebasestorage.googleapis.com/v0/b/german-for-u.appspot.com/o/tudehoi.pdf?alt=media&token=1a78a2d7-9cb4-4926-aed9-05cfb2c4382c"),
+      // body: SfPdfViewer.network("https://firebasestorage.googleapis.com/v0/b/german-for-u.appspot.com/o/tudehoi.pdf?alt=media&token=1a78a2d7-9cb4-4926-aed9-05cfb2c4382c")
+      body: loaded?SfPdfViewer.network("https://firebasestorage.googleapis.com/v0/b/german-for-u.appspot.com/o/pdf%2FB1%2FcachSuDungALSvaWENN.pdf?alt=media&token=c7338210-6b70-45a1-b1b4-c830cd14af62"):Center(child: CircularProgressIndicator(),),
     );
   }
 
-
-  // String aa = "";
-  //
-  // Future getContent() async {
-  //   final a = await FirebaseFirestore.instance.collection('CTHT - nguPhap').get();
-  //
-  //   a.docs.forEach((element) {
-  //     setState(() {
-  //       aa = element['ff'];
-  //     });
-  //   });
-  //
-  // }
-  //
-  //
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   getContent();
-  // }
-  //
-  // @override
-  // Widget build(BuildContext context) {
-  //   return Material(
-  //     child: SafeArea(
-  //       child: Scaffold(
-  //         appBar: AppBar(),
-  //         body: PDFView(
-  //           filePath: "https://firebasestorage.googleapis.com/v0/b/german-for-u.appspot.com/o/tudehoi.pdf?alt=media&token=1a78a2d7-9cb4-4926-aed9-05cfb2c4382c",
-  //           enableSwipe: true,
-  //           swipeHorizontal: false,
-  //           autoSpacing: false,
-  //           pageSnap: true,
-  //           pageFling: false,
-  //           onError: (error) {
-  //             print(error.toString());
-  //           },
-  //         )
-  //       ),
-  //     ),
-  //   );
-  // }
+// String aa = "";
+//
+// Future getContent() async {
+//   final a = await FirebaseFirestore.instance.collection('CTHT - nguPhap').get();
+//
+//   a.docs.forEach((element) {
+//     setState(() {
+//       aa = element['ff'];
+//     });
+//   });
+//
+// }
+//
+//
+// @override
+// void initState() {
+//   super.initState();
+//   getContent();
+// }
+//
+// @override
+// Widget build(BuildContext context) {
+//   return Material(
+//     child: SafeArea(
+//       child: Scaffold(
+//         appBar: AppBar(),
+//         body: PDFView(
+//           filePath: "https://firebasestorage.googleapis.com/v0/b/german-for-u.appspot.com/o/tudehoi.pdf?alt=media&token=1a78a2d7-9cb4-4926-aed9-05cfb2c4382c",
+//           enableSwipe: true,
+//           swipeHorizontal: false,
+//           autoSpacing: false,
+//           pageSnap: true,
+//           pageFling: false,
+//           onError: (error) {
+//             print(error.toString());
+//           },
+//         )
+//       ),
+//     ),
+//   );
+// }
 }

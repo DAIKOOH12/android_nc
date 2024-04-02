@@ -59,9 +59,7 @@ class _trangChuState extends State<trangChu> {
 
     if (getTienDo.docs.isNotEmpty) {
       print("Đã có");
-    }
-    else {
-
+    } else {
       try {
         await FirebaseFirestore.instance.collection('tienDo').add({
           'sEmail': FirebaseAuth.instance.currentUser?.email,
@@ -96,205 +94,224 @@ class _trangChuState extends State<trangChu> {
 
     return SafeArea(
       child: Scaffold(
-          endDrawer: Drawer(
-            width: 280,
-            backgroundColor: Colors.white,
-            child: ListView(
-              children: [
-                Container(
-                  constraints: BoxConstraints(
-                    maxWidth: 50
-                  ),
-                  padding: EdgeInsets.all(10),
-                  height: 100,
-                  color: Colors.green,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(name, style: TextStyle(fontSize: 18),),
-                      Text(sEmail),
-                    ],
-                  ),
+        endDrawer: Drawer(
+          width: 280,
+          backgroundColor: Colors.white,
+          child: ListView(
+            children: [
+              Container(
+                constraints: BoxConstraints(maxWidth: 50),
+                padding: EdgeInsets.all(10),
+                height: 100,
+                color: Colors.green,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      name,
+                      style: TextStyle(fontSize: 18, color: Colors.white),
+                    ),
+                    Text(
+                      sEmail,
+                      style: TextStyle(fontSize: 15, color: Colors.white),
+                    ),
+                  ],
                 ),
-                ElevatedButton(
-                  onPressed: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context){
+              ),
+              Image(image: AssetImage('images/gfu_image.jpg')),
+              ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
                       return tienDoHomNay();
                     }));
                   },
-                  style: ElevatedButton.styleFrom(
-
-                  ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(Icons.insert_chart),
                       Text(
                         'Quá trình học tập',
-                        style: TextStyle(
-
-                        ),
+                        style: TextStyle(),
                       ),
                     ],
-                  )
-                ),
-                Center(
-                  child: MaterialButton(
-                    color: Colors.purple[200],
-                    onPressed: () async {
-                      await FirebaseAuth.instance.signOut();
-                      await GoogleSignIn().signOut();
-                      Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(builder: (context) => MainPage()),
-                            (Route<dynamic> route) => false,
-                      );
-                      },
-                    child: Text('Sign out'),
+                  )),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(60,0,60,0),
+                child: ElevatedButton(
+                  onPressed: () async {
+                    await FirebaseAuth.instance.signOut();
+                    await GoogleSignIn().signOut();
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) => MainPage()),
+                          (Route<dynamic> route) => false,
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
                   ),
-                )
-              ],
-            ),
+                  child: Text('Đăng xuất',style: TextStyle(color: Colors.white),),
+                ),
+              ),
+            ],
           ),
-          appBar: AppBar(
-            title: Text(
-              'Hallo ' + name,
-              style: TextStyle(color: Color(0xFF038400)),
-            ),
-            key: _scaffoldKey,
-            actions: <Widget>[
-              Container(
+        ),
+        appBar: AppBar(
+          title: Text(
+            'Hallo ' + name,
+            style: TextStyle(color: Color(0xFF038400)),
+          ),
+          key: _scaffoldKey,
+          actions: <Widget>[
+            Container(
                 // padding: const EdgeInsets.all(10.0),
                 // width: 60,
                 // height: 40,
                 child: Builder(
-                  builder: (context) => IconButton(
-                    icon: new Icon(Icons.account_circle_rounded, size: 40,),
-                    onPressed: () => Scaffold.of(context).openEndDrawer(),
-                  ),
-                )
-              )
-            ],
-
-          ),
-
-
-          body: Stack(
-            children: [
-              DefaultTabController(
-                length: 3,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Material(
-                      child: Container(
-                        height: 60,
-                        child: TabBar(
-                          labelColor: Colors.white,
-                          // indicatorPadding: EdgeInsets.all(10),
-                          physics: ClampingScrollPhysics(),
-                          padding: EdgeInsets.all(10),
-                          unselectedLabelColor: Colors.black,
-                          indicatorSize: TabBarIndicatorSize.label,
-                          indicator: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30),
-                            color: Color(0xff026B00),
-                          ),
-                          tabs: [
-                            Tab(
-                              child: Container(
-                                padding: EdgeInsets.only(left: 8, right: 8),
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: Color(0xff026B00), width: 1),
-                                  borderRadius: BorderRadius.circular(30),
-                                  // color: Colors.grey[100]
-                                ),
-                                height: 60,
-                                width: 150,
-                                child: Align(
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    'Từ vựng',
-                                    style: TextStyle(fontSize: 17),
+              builder: (context) => IconButton(
+                icon: new Icon(
+                  Icons.account_circle_rounded,
+                  size: 40,
+                ),
+                onPressed: () => Scaffold.of(context).openEndDrawer(),
+              ),
+            ))
+          ],
+        ),
+        body: Stack(
+          children: [
+            DefaultTabController(
+              length: 3,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Material(
+                    child: Container(
+                      height: 60,
+                      child: TabBar(
+                        labelColor: Colors.white,
+                        // indicatorPadding: EdgeInsets.all(10),
+                        physics: ClampingScrollPhysics(),
+                        padding: EdgeInsets.all(10),
+                        unselectedLabelColor: Colors.black,
+                        indicatorSize: TabBarIndicatorSize.label,
+                        dividerColor: Colors.transparent,
+                        indicator: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30),
+                          color: Color(0xff026B00),
+                        ),
+                        tabs: [
+                          Tab(
+                            child: Container(
+                              width: 200,
+                              padding: EdgeInsets.all(5),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(50),
+                                color: Color.fromRGBO(245, 245, 245, 0.2),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Color.fromRGBO(168, 168, 168, 0.4),
+                                    spreadRadius: 2,
+                                    blurRadius: 1,
+                                    offset: Offset(0, 3),
                                   ),
+                                ],
+                              ),
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: Text(
+                                  'Từ vựng',
+                                  style: TextStyle(fontSize: 15),
                                 ),
                               ),
                             ),
-                            Tab(
-                                child: Container(
+                          ),
+                          Tab(
+                              child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(50),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Color.fromRGBO(168, 168, 168, 0.4),
+                                  spreadRadius: 2,
+                                  blurRadius: 1,
+                                  offset: Offset(0, 3),
+                                ),
+                              ],
+                            ),
+                            height: 60,
+                            width: 150,
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: Text(
+                                'Ngữ pháp',
+                                style: TextStyle(fontSize: 15),
+                              ),
+                            ),
+                          )),
+                          Tab(
+                            child: Container(
                               decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: Color(0xff026B00), width: 1),
-                                  borderRadius: BorderRadius.circular(30)),
+                                borderRadius: BorderRadius.circular(50),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Color.fromRGBO(168, 168, 168, 0.4),
+                                    spreadRadius: 2,
+                                    blurRadius: 1,
+                                    offset: Offset(0, 3),
+                                  ),
+                                ],
+                              ),
                               height: 60,
                               width: 150,
                               child: Align(
                                 alignment: Alignment.center,
                                 child: Text(
-                                  'Ngữ pháp',
-                                  style: TextStyle(fontSize: 17),
-                                ),
-                              ),
-                            )),
-                            Tab(
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: Color(0xff026B00), width: 1),
-                                    borderRadius: BorderRadius.circular(30)),
-                                height: 60,
-                                width: 150,
-                                child: Align(
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    'Luyện thi',
-                                    style: TextStyle(fontSize: 17),
-                                  ),
+                                  'Luyện thi',
+                                  style: TextStyle(fontSize: 15),
                                 ),
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
-                    Expanded(
-                      child: TabBarView(children: [
-                        tuVung(),
-                        nguPhap(),
-                        luyenThi(),
-                      ]),
+                  ),
+                  Expanded(
+                    child: TabBarView(children: [
+                      tuVung(),
+                      nguPhap(),
+                      luyenThi(),
+                    ]),
+                  ),
+                ],
+              ),
+            ),
+            Positioned(
+                child: Align(
+              alignment: Alignment.bottomRight,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(0, 0, 15, 15),
+                child: FloatingActionButton(
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Home()));
+                  },
+                  child: Container(
+                    child: Image(
+                      image: AssetImage('images/ai_chatbot_icon.png'),
                     ),
-                  ],
+                    width: 30.0,
+                    height: 30.0,
+                  ),
+                  backgroundColor: Color.fromRGBO(0, 132, 157, 1.0),
                 ),
               ),
-              Positioned(
-                  child: Align(
-                alignment: Alignment.bottomRight,
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 0, 15, 15),
-                  child: FloatingActionButton(
-                    onPressed: () {
-                      Navigator.push(context,
-                        MaterialPageRoute(builder: (context)=>Home())
-                      );
-                    },
-                    child: Container(
-                        child: Image(
-                            image: AssetImage(
-                                'images/ai_chatbot_icon.png'),
-                        ),
-                      width: 30.0,
-                      height: 30.0,
-                    ),
-                    backgroundColor: Color.fromRGBO(0, 132, 157, 1.0),
-                  ),
-                ),
-              ))
-            ],
-          ),
-
+            ))
+          ],
+        ),
       ),
     );
   }

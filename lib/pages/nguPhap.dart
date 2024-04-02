@@ -13,7 +13,7 @@ class nguPhap extends StatefulWidget {
 }
 
 class _nguPhapState extends State<nguPhap> {
-
+  int pos=0;
   // List<String> listTenNguPhap = [];
   // List<String> listId = [];
   // List<String> listLink = [];
@@ -75,6 +75,7 @@ class _nguPhapState extends State<nguPhap> {
                   return SizedBox(height: 25,);
                 },
                 itemBuilder: (context, index) {
+                  pos=index+1;
                   return GestureDetector(
                     onTap: () {
                       Navigator.push(context,
@@ -85,63 +86,74 @@ class _nguPhapState extends State<nguPhap> {
                     },
                     child: Container(
                       padding: EdgeInsets.all(10),
-                      width: size.width * 0.85,
+                      width: size.width * 0.9,
                       height: size.height * 0.13,
                       decoration: BoxDecoration(
                           color: Color(0xFF006A0B),
-                          borderRadius: BorderRadius.circular(18)
+                          borderRadius: BorderRadius.circular(18),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.7),
+                            spreadRadius: 2,
+                            blurRadius: 1,
+                            offset: Offset(0, 3),
+                          ),
+                        ],
                       ),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: size.width * 0.7,
-                            height: size.height * 0.13,
-                            child: Text(
-                              listNP[index].tenChuDe,
-                              // textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                  // backgroundColor: Colors.brown
+                      child: Center(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Container(
+                              child: Text(
+                                "Bài "+pos.toString()+": "+listNP[index].tenChuDe,
+                                // textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold
+                                    // backgroundColor: Colors.brown
+                                ),
                               ),
                             ),
-                          ),
-                        // Stack(
-                          //   children: [
-                          //     Positioned(
-                          //       left: 15,
-                          //       top: 10,
-                          //       bottom: 0,
-                          //       child: Container(
-                          //         child: Text(
-                          //           listTenNguPhap[index],
-                          //           textAlign: TextAlign.center,
-                          //           style: TextStyle(
-                          //               color: Colors.white,
-                          //               fontSize: 20,
-                          //             backgroundColor: Colors.brown
-                          //           ),
-                          //         ),
-                          //       ),
-                          //     ),
-                          //     // SizedBox(width: 20,),
-                          //     Positioned(
-                          //       // top: ,
-                          //       right: 10,
-                          //       top: 0,
-                          //       bottom: 0,
-                          //       child: CircularPercentIndicator(
-                          //         radius: 25,
-                          //         lineWidth: 5,
-                          //         percent: 0.7,
-                          //         progressColor: Color(0xFF0EAD00),
-                          //         backgroundColor: Colors.white,
-                          //         center: Text('70%', style: TextStyle(color: Colors.white),),
-                          //       ),
-                          //     )
-                          //   ],
-                          // ),
-                        ],
+                          // Stack(
+                            //   children: [
+                            //     Positioned(
+                            //       left: 15,
+                            //       top: 10,
+                            //       bottom: 0,
+                            //       child: Container(
+                            //         child: Text(
+                            //           listTenNguPhap[index],
+                            //           textAlign: TextAlign.center,
+                            //           style: TextStyle(
+                            //               color: Colors.white,
+                            //               fontSize: 20,
+                            //             backgroundColor: Colors.brown
+                            //           ),
+                            //         ),
+                            //       ),
+                            //     ),
+                            //     // SizedBox(width: 20,),
+                            //     Positioned(
+                            //       // top: ,
+                            //       right: 10,
+                            //       top: 0,
+                            //       bottom: 0,
+                            //       child: CircularPercentIndicator(
+                            //         radius: 25,
+                            //         lineWidth: 5,
+                            //         percent: 0.7,
+                            //         progressColor: Color(0xFF0EAD00),
+                            //         backgroundColor: Colors.white,
+                            //         center: Text('70%', style: TextStyle(color: Colors.white),),
+                            //       ),
+                            //     )
+                            //   ],
+                            // ),
+                          ],
+                        ),
                       ),
                     ),
                   );
