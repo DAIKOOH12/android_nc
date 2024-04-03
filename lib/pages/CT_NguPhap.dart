@@ -88,6 +88,7 @@ class _newState extends State<CT_nguPhap> {
       },
     );
     getDem();
+    print(widget.link);
     super.initState();
   }
 
@@ -103,14 +104,13 @@ class _newState extends State<CT_nguPhap> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.green,
       appBar: AppBar(
         title: Text('Ngữ Pháp'),
         centerTitle: true,
       ),
       // body: SfPdfViewer.network("https://firebasestorage.googleapis.com/v0/b/german-for-u.appspot.com/o/tudehoi.pdf?alt=media&token=1a78a2d7-9cb4-4926-aed9-05cfb2c4382c"),
       // body: SfPdfViewer.network("https://firebasestorage.googleapis.com/v0/b/german-for-u.appspot.com/o/tudehoi.pdf?alt=media&token=1a78a2d7-9cb4-4926-aed9-05cfb2c4382c")
-      body: loaded?SfPdfViewer.network("https://firebasestorage.googleapis.com/v0/b/german-for-u.appspot.com/o/pdf%2FB1%2FcachSuDungALSvaWENN.pdf?alt=media&token=c7338210-6b70-45a1-b1b4-c830cd14af62"):Center(child: CircularProgressIndicator(),),
+      body: loaded?SfPdfViewer.network(widget.link):Center(child: CircularProgressIndicator(),),
     );
   }
 

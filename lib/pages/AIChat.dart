@@ -63,88 +63,93 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     bool hasApiKey = dotenv.env['API_KEY_AI'] != null && dotenv.env['API_KEY_AI']!.isNotEmpty;
-    return  Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: hasApiKey
-                ? ListView.builder(
-              controller: _scrollController,
-              itemBuilder: (context, idx) {
-                final content = _chat.history.toList()[idx];
-                final text = content.parts.whereType<TextPart>().map<String>((e) => e.text).join('');
-                return MessageWidget(
-                  text: text,
-                  isFromUser: content.role == 'user',
-                );
-              },
-              itemCount: _chat.history.length,
-            )
-                : ListView(
-              children: const [
-                Text('No API key found. Please provide an API Key.'),
-              ],
+    return  GestureDetector(
+      onTap: (){
+        FocusScope.of(context).unfocus();
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: hasApiKey
+                  ? ListView.builder(
+                controller: _scrollController,
+                itemBuilder: (context, idx) {
+                  final content = _chat.history.toList()[idx];
+                  final text = content.parts.whereType<TextPart>().map<String>((e) => e.text).join('');
+                  return MessageWidget(
+                    text: text,
+                    isFromUser: content.role == 'user',
+                  );
+                },
+                itemCount: _chat.history.length,
+              )
+                  : ListView(
+                children: const [
+                  Text('No API key found. Please provide an API Key.'),
+                ],
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              vertical: 25,
-              horizontal: 15,
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextFormField(
-                    controller: _textController,
-                    autofocus: true,
-                    decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.all(15),
-                      hintText: 'Nhập câu hỏi của bạn...',
-                      border: OutlineInputBorder(
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(14),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical: 25,
+                horizontal: 15,
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextFormField(
+                      controller: _textController,
+                      autofocus: true,
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.all(15),
+                        hintText: 'Nhập câu hỏi của bạn...',
+                        border: OutlineInputBorder(
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(14),
+                          ),
+                          borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.secondary,
+                          ),
                         ),
-                        borderSide: BorderSide(
-                          color: Theme.of(context).colorScheme.secondary,
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(14),
+                          ),
+                          borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.secondary,
+                          ),
                         ),
                       ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(14),
-                        ),
-                        borderSide: BorderSide(
-                          color: Theme.of(context).colorScheme.secondary,
-                        ),
-                      ),
+                      onFieldSubmitted: (String value) {
+                        _sendChatMessage(value);
+                      },
                     ),
-                    onFieldSubmitted: (String value) {
-                      _sendChatMessage(value);
-                    },
                   ),
-                ),
-                const SizedBox.square(
-                  dimension: 15,
-                ),
-                if (!_loading)
-                  IconButton(
-                    onPressed: () async {
-                      _sendChatMessage(_textController.text);
-                      FocusManager.instance.primaryFocus?.unfocus();
-                    },
-                    icon: Icon(
-                      Icons.send,
-                      color: Colors.blue,
-                    ),
-                  )
-                else
-                  const CircularProgressIndicator(),
-              ],
+                  const SizedBox.square(
+                    dimension: 15,
+                  ),
+                  if (!_loading)
+                    IconButton(
+                      onPressed: () async {
+                        _sendChatMessage(_textController.text);
+                        FocusManager.instance.primaryFocus?.unfocus();
+                      },
+                      icon: Icon(
+                        Icons.send,
+                        color: Colors.blue,
+                      ),
+                    )
+                  else
+                    const CircularProgressIndicator(),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

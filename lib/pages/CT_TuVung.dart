@@ -39,8 +39,8 @@ class _CT_TuVungState extends State<CT_TuVung> {
   List<String> _listNghia = [];
   List<String> _listLinkAnh = [];
   List<DT_tuVung> lst = [];
-  List<String> listAnhThe = ["images/flashcard.png", 'images/study.png', "images/test.png"];
-  List<String> listTenThe = ["Thẻ ghi nhớ", "Học", "Kiểm tra"];
+  List<String> listAnhThe = ["images/flashcard.png", 'images/study.png'];
+  List<String> listTenThe = ["Thẻ ghi nhớ", "Học"];
 
   DateTime startTime = DateTime.now();
   FlutterTts flutterTts = FlutterTts();
