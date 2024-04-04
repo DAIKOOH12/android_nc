@@ -57,26 +57,12 @@ class _luyenThiState extends State<luyenThi> {
                         ),
                         child: Stack(
                           children: [
-                            Positioned(
-                              top: 0,
-                                left: 0,
-                                right: 0,
-              
-                                child: Container(
-                                  height: size.height * 0.07,
-                                  decoration: BoxDecoration(
-                                    color: Color(0xFF007C1B),
-                                    borderRadius: BorderRadius.only(topLeft: Radius.circular(18), topRight: Radius.circular(18))
-                                  ),
-                                    child: Center(
-                                      child: Text(
-                                          'Horen',
-                                        style: TextStyle(color: Colors.white,fontSize: 25),
-                                      ),
-                                    )
-                                )
+                            Text(
+                                "Horen",
+                              style: TextStyle(
+                                fontSize: 30,
+                              ),
                             ),
-              
                             Positioned(
                               bottom: 0,
                               left: 0,
@@ -91,7 +77,7 @@ class _luyenThiState extends State<luyenThi> {
                                   child: Row(
                                     children: [
                                       Image(image: AssetImage('images/headphone.png'),
-              
+
                                         // AssetImage('images/headphone.png'),
                                         // size: 50,
                                       ),
@@ -102,7 +88,7 @@ class _luyenThiState extends State<luyenThi> {
                                             Text(
                                               'Luyện thi bài nghe theo chứng chỉ',
                                               style: TextStyle(
-              
+
                                               ),
                                             ),
                                           ]
@@ -138,26 +124,13 @@ class _luyenThiState extends State<luyenThi> {
                       ),
                       child: Stack(
                         children: [
-                          Positioned(
-                              top: 0,
-                              left: 0,
-                              right: 0,
-              
-                              child: Container(
-                                  height: size.height * 0.07,
-                                  decoration: BoxDecoration(
-                                      color: Color(0xFF007C1B),
-                                      borderRadius: BorderRadius.only(topLeft: Radius.circular(18), topRight: Radius.circular(18))
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                        'Prüfungsvorbereitung',
-                                      style: TextStyle(fontSize: 25,color: Colors.white),
-                                    ),
-                                  )
-                              )
+
+                          Text(
+                              "Prüfungsvorbereitung",
+                            style: TextStyle(
+                              fontSize: 30
+                            ),
                           ),
-              
                           Positioned(
                             bottom: 0,
                             left: 0,
