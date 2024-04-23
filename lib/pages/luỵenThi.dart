@@ -34,71 +34,71 @@ class _luyenThiState extends State<luyenThi> {
                     SizedBox(height: 25,),
               
                     //luyện nghe
-                    GestureDetector(
-                      onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context){
-                          return luyenNghe();
-                        }));
-                      },
-                      child: Container(
-                        width: size.width * 0.85,
-                        height: size.height * 0.2,
-                        decoration: BoxDecoration(
-                          color: Color(0xFFD7FFDB),
-                          borderRadius: BorderRadius.circular(18),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Color.fromRGBO(168, 168, 168, 0.4),
-                              spreadRadius: 2,
-                              blurRadius: 1,
-                              offset: Offset(0, 3),
-                            ),
-                          ],
-                        ),
-                        child: Stack(
-                          children: [
-                            // Text(
-                            //     "Horen",
-                            //   style: TextStyle(
-                            //     fontSize: 30,
-                            //   ),
-                            // ),
-                            Positioned(
-
-                              child: Container(
-                                padding: EdgeInsets.all(20),
-                                  decoration: BoxDecoration(
-                                    // color: Colors.white
-                                    borderRadius: BorderRadius.vertical(bottom: Radius.circular(18))
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Image(image: AssetImage('images/headphone.png'),
-
-                                        // AssetImage('images/headphone.png'),
-                                        // size: 50,
-                                      ),
-                                      SizedBox(width: 10,),
-                                      Expanded(
-                                        child: Wrap(
-                                          children: [
-                                            Text(
-                                              'Luyện thi bài nghe theo chứng chỉ',
-                                              style: TextStyle(
-                                                fontSize: 20,
-                                              ),
-                                            ),
-                                          ]
-                                        ),
-                                      )
-                                    ]
-                                  )
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
+                    // GestureDetector(
+                    //   onTap: (){
+                    //     Navigator.push(context, MaterialPageRoute(builder: (context){
+                    //       return luyenNghe();
+                    //     }));
+                    //   },
+                    //   child: Container(
+                    //     width: size.width * 0.85,
+                    //     height: size.height * 0.2,
+                    //     decoration: BoxDecoration(
+                    //       color: Color(0xFFD7FFDB),
+                    //       borderRadius: BorderRadius.circular(18),
+                    //       boxShadow: [
+                    //         BoxShadow(
+                    //           color: Color.fromRGBO(168, 168, 168, 0.4),
+                    //           spreadRadius: 2,
+                    //           blurRadius: 1,
+                    //           offset: Offset(0, 3),
+                    //         ),
+                    //       ],
+                    //     ),
+                    //     child: Stack(
+                    //       children: [
+                    //         // Text(
+                    //         //     "Horen",
+                    //         //   style: TextStyle(
+                    //         //     fontSize: 30,
+                    //         //   ),
+                    //         // ),
+                    //         // Positioned(
+                    //         //
+                    //         //   child: Container(
+                    //         //     padding: EdgeInsets.all(20),
+                    //         //       decoration: BoxDecoration(
+                    //         //         // color: Colors.white
+                    //         //         borderRadius: BorderRadius.vertical(bottom: Radius.circular(18))
+                    //         //       ),
+                    //         //       child: Row(
+                    //         //         children: [
+                    //         //           // Image(image: AssetImage('images/headphone.png'),
+                    //         //           //
+                    //         //           //   // AssetImage('images/headphone.png'),
+                    //         //           //   // size: 50,
+                    //         //           // ),
+                    //         //           // SizedBox(width: 10,),
+                    //         //           // Expanded(
+                    //         //           //   child: Wrap(
+                    //         //           //     children: [
+                    //         //           //       Text(
+                    //         //           //         'Luyện thi bài nghe theo chứng chỉ',
+                    //         //           //         style: TextStyle(
+                    //         //           //           fontSize: 20,
+                    //         //           //         ),
+                    //         //           //       ),
+                    //         //           //     ]
+                    //         //           //   ),
+                    //         //           // )
+                    //         //         ]
+                    //         //       )
+                    //         //   ),
+                    //         // )
+                    //       ],
+                    //     ),
+                    //   ),
+                    // ),
               
                     SizedBox(height: 30,),
               
